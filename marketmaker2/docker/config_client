@@ -1,0 +1,6 @@
+node1=`dig +short mm_seed_d`
+node2=`dig +short mm_seed_c`
+node3=`dig +short mm_seed_c`
+node4=`dig +short mm_seed_a`
+
+export config=`echo \{\"gui\":\"MM2GUI\",\"netid\":9000,\"userhome\":\"${HOME}/\",\"passphrase\":\"${PASSPHRASE}\",\"rpc_password\":\"OHSHITHEREWEGOAGAIN\",\"rpc_local_only\":false,\"rpcip\":\"0.0.0.0\",\"seednodes\":[\"$node1\"\,\"$node2\"\,\"$node3\"\,\"$node4\"]\}`

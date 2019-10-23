@@ -1,0 +1,3 @@
+RDgLa5o9ic4mwnYbBHND4fzQW3pVENDtPr
+{'isvalid': True, 'address': 'RDgLa5o9ic4mwnYbBHND4fzQW3pVENDtPr', 'scriptPubKey': '76a914304128d33eec093a3a6610ab367cbb7e78e6ab0b88ac', 'segid': 2, 'ismine': True, 'iswatchonly': False, 'isscript': False, 'pubkey': '03f14e0f4f9fda89788ddaa52bd4094ff2d0e20a6616059f27843df5ac2cbcaa62', 'iscompressed': True, 'account': ''}
+UuPgoMmGyj6YEftg4No7gNHAwiQFGgKCKVK8aXggGCxsiveKCj3q
