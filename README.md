@@ -14,7 +14,7 @@ Based on Docker containers
 ```
 $ cp example-compose.yml docker-compose.yml
 $ cp example.env .env
-$ docker-compose up --build
+# docker-compose up --build  # might require root privileges
 ```
 
 ## Usage and structure:
