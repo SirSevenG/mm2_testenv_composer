@@ -1,5 +1,5 @@
 # based on https://github.com/KomodoPlatform/atomicDEX-API/blob/mm2/Dockerfile
-FROM        ubuntu:bionic
+FROM        komodoofficial/atomicdexapi
 LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
 RUN         apt-get update && \
