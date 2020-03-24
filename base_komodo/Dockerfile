@@ -15,7 +15,8 @@ RUN         mkdir /.zcash-params && \
             apt-get update && \
             apt-get install -y git && \
             cd /komodo && \
-            git clone https://github.com/KomodoPlatform/komodo.git --branch master -- ./zcutil/fetch-params.sh && \
+            git clone https://github.com/KomodoPlatform/komodo.git -b master -n . && \
+            git checkout master -- ./zcutil/fetch-params.sh && \
             ./zcutil/fetch-params.sh
 
 # Configuration
