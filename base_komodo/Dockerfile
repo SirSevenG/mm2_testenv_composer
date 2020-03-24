@@ -13,16 +13,18 @@ RUN         mkdir /.zcash-params && \
             ln -s /komodo/komodod /usr/bin/komodod  && \
             ln -s /komodo/komodo-cli /usr/bin/komodo-cli && \
             apt-get update && \
-            apt-get install -y git && \
-            cd /komodo && \
-            git clone https://github.com/KomodoPlatform/komodo.git -b master -n . && \
-            git checkout master -- ./zcutil/fetch-params.sh && \
-            ./zcutil/fetch-params.sh
+            apt-get install -y git wget
 
-# Configuration
+# cp configs and bootstrap
 COPY        docker/bootstrap /.komodo/
 
 USER        swapper
 WORKDIR     /komodo/src
+
+# fetch params
+RUN         cd /komodo && \
+            git clone https://github.com/KomodoPlatform/komodo.git -b master -n fetch && cd fetch && \
+            git checkout master -- ./zcutil/fetch-params.sh && \
+            ./zcutil/fetch-params.sh
 
 CMD ["echo", "done"]

@@ -7,4 +7,4 @@ if [ ${SEED} = "True" ];
   	source config_client
 fi
 
-./mm2 $config
+mm2 $config
