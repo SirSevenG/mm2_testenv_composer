@@ -1,4 +1,4 @@
-FROM        komodoofficial/komodo
+FROM        komodoofficial/komodo:cd_release_f04f510_dev
 LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
 ARG         DEBIAN_FRONTEND=noninteractive
@@ -10,7 +10,6 @@ RUN         mkdir /.zcash-params && \
             useradd -u 3003 -m swapper && \
             chown -R swapper /komodo && \
             chown -R swapper /.zcash-params && \
-            chown -R swapper /.ccach
 
 # Configuration
 COPY        docker/bootstrap /.komodo/
