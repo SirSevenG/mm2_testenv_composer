@@ -9,7 +9,14 @@ EXPOSE      11511/tcp
 RUN         mkdir /.zcash-params && \
             useradd -u 3003 -m swapper && \
             chown -R swapper /komodo && \
-            chown -R swapper /.zcash-params
+            chown -R swapper /.zcash-params && \
+            ln -s /komodo/komodod /usr/bin/komodod  && \
+            ln -s /komodo/komodo-cli /usr/bin/komodo-cli && \
+            apt-get update && \
+            apt-get install -y git && \
+            cd /komodo && \
+            git clone https://github.com/KomodoPlatform/komodo.git --branch master -- ./zcutil/fetch-params.sh && \
+            ./zcutil/fetch-params.sh
 
 # Configuration
 COPY        docker/bootstrap /.komodo/
