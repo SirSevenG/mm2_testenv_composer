@@ -9,7 +9,7 @@ EXPOSE      11511/tcp
 RUN         mkdir /.zcash-params && \
             useradd -u 3003 -m swapper && \
             chown -R swapper /komodo && \
-            chown -R swapper /.zcash-params && \
+            chown -R swapper /.zcash-params
 
 # Configuration
 COPY        docker/bootstrap /.komodo/
