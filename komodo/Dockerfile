@@ -3,16 +3,19 @@ LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
+# get ENV vars from composer
+ENV         AC=$AC \
+            NODE=$NODE \
+            MODE=$MODE \
+            GEN=$GEN
+
 EXPOSE      8465/tcp
 EXPOSE      11511/tcp
 
 # cp configs and bootstrap
 COPY        docker/bootstrap /.komodo/
-# Passed from compose:
-#  -ac_name=${CHAIN} -ac_supply=${SUPPLY} -addnode=${NODE} -ac_cc=${CC}
 COPY        docker/connect.sh /komodo/src/start
 COPY        docker/gencoin.sh /komodo/src/gencoin
-# COPY docker/bootsrap /komodo/path/to/blocks
 
 RUN         mkdir /.zcash-params && \
             useradd -u 3003 -m swapper && \
