@@ -30,4 +30,3 @@ WORKDIR     /data
 EXPOSE 50001 50002 50004 8000
 
 CMD ["echo", "done"]
-# leveldb-dev 
