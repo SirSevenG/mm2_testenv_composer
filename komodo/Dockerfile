@@ -37,4 +37,4 @@ RUN         cd /komodo && \
             git checkout master -- ./zcutil/fetch-params.sh && \
             ./zcutil/fetch-params.sh
 
-CMD ./connect.sh
+CMD ./start
