@@ -18,7 +18,6 @@ ENV         PACKS="python3.7 \
 
 RUN         apt-get update && \
             apt-get -y install -q $PACKS && \
-            mkdir /workdir && \
             mkdir /log && \
             useradd -u 3003 -m swapper && \
             chown -R swapper:swapper /workdir && \
