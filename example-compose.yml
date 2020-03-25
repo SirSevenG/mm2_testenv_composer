@@ -55,9 +55,7 @@ services:
     komodo_aa:
         build: ./komodo
         environment:
-            CHAIN: ${AC_NAME_A}
-            SUPPLY: ${AC_SUPPLY_A}
-            CC: ${AC_CC_A}
+            AC: ${AC_PARAMS_A}
             NODE: ${ADD_NODE_AA}
             MODE: ${SCRIPT_MODE_AA}
             GEN: ${GEN_AA}
@@ -73,9 +71,7 @@ services:
     komodo_ab:
         build: ./komodo
         environment:
-            CHAIN: ${AC_NAME_A}
-            SUPPLY: ${AC_SUPPLY_A}
-            CC: ${AC_CC_A}
+            AC: ${AC_PARAMS_A}
             NODE: ${ADD_NODE_AA}
             MODE: ${SCRIPT_MODE_AB}
             GEN: ${GEN_AB}
@@ -91,9 +87,7 @@ services:
     komodo_ba:
         build: ./komodo
         environment:
-            CHAIN: ${AC_NAME_B}
-            SUPPLY: ${AC_SUPPLY_B}
-            CC: ${AC_CC_B}
+            AC: ${AC_PARAMS_B}
             NODE: ${ADD_NODE_BA}
             MODE: ${SCRIPT_MODE_BA}
             GEN: ${GEN_BA}
@@ -109,9 +103,7 @@ services:
     komodo_bb:
         build: ./komodo
         environment:
-            CHAIN: ${AC_NAME_B}
-            SUPPLY: ${AC_SUPPLY_B}
-            CC: ${AC_CC_B}
+            AC: ${AC_PARAMS_B}
             NODE: ${ADD_NODE_BB}
             MODE: ${SCRIPT_MODE_BB}
             GEN: ${GEN_BB}
