@@ -34,5 +34,4 @@ RUN         cd /komodo && \
             git checkout master -- ./zcutil/fetch-params.sh && \
             ./zcutil/fetch-params.sh
 
-# Run $MODE script for $CHAIN in base container komodo/local:latest (base_komodo)
-CMD ./start
+CMD ./connect.sh
