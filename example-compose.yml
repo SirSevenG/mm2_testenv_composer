@@ -44,9 +44,7 @@ services:
             white:
                 ipv4_address: 172.26.0.10
         depends_on:
-            - komodo_base
             - emx_base
-            - mm_base
         volumes:
             - ./log/workspace:/log
 
