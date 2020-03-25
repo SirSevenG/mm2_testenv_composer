@@ -5,7 +5,7 @@ echo $AC
 echo $GEN
 if [ "${GEN}" = "True" ];
   then
-    komodod "${AC}" -gen
+    komodod "${AC}" -gen -addnode="${NODE}"
   else
-  	komodod "${AC}"
+  	komodod "${AC}"  -addnode="${NODE}"
 fi
