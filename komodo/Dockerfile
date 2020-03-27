@@ -1,23 +1,42 @@
-# Run $MODE script for $CHAIN in base container komodo/local:latest (base_komodo)
+FROM        komodoofficial/komodo:cd_release_f04f510_dev
+LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
-FROM local/komodo:latest
+ARG         DEBIAN_FRONTEND=noninteractive
 
-USER        root
-WORKDIR     /komodo/src
+# get ENV vars from composer
+ENV         AC=$AC \
+            NODE=$NODE \
+            MODE=$MODE \
+            GEN=$GEN \
+            HOME=/
 
-EXPOSE 11510
-EXPOSE 8464
+EXPOSE      8465/tcp
+EXPOSE      11511/tcp
 
-# Passed from compose:
-#  -ac_name=${CHAIN} -ac_supply=${SUPPLY} -addnode=${NODE} -ac_cc=${CC} 
-
+# cp configs and bootstrap
+COPY        docker/bootstrap /.komodo/
 COPY        docker/connect.sh /komodo/src/start
 COPY        docker/gencoin.sh /komodo/src/gencoin
-# COPY docker/bootsrap /komodo/path/to/blocks
 
-RUN         chmod +x /komodo/src/start && \
+RUN         mkdir /.zcash-params && \
+            useradd -u 3003 -m swapper && \
+            chown -R swapper /.zcash-params && \
+            ln -s /komodo/komodod /usr/bin/komodod  && \
+            ln -s /komodo/komodo-cli /usr/bin/komodo-cli && \
+            apt-get update && \
+            apt-get install -y git wget && \
+            chmod +x /komodo/src/start && \
             chmod +x /komodo/src/gencoin && \
-            chown -R swapper:swapper /komodo/src
+            chown -R swapper:swapper /komodo && \
+            chown -R swapper:swapper /.komodo
+
 USER        swapper
+WORKDIR     /komodo/src
+
+# fetch params
+RUN         cd /komodo && \
+            git clone https://github.com/KomodoPlatform/komodo.git -b master -n fetch && cd fetch && \
+            git checkout master -- ./zcutil/fetch-params.sh && \
+            ./zcutil/fetch-params.sh
 
 CMD ./start

@@ -2,6 +2,7 @@ import json
 from mm2rpclib import MarketMaker2Proxy as MMtwo
 import time
 import requests
+import os
 import ast
 from slickrpc import Proxy
 
@@ -32,6 +33,7 @@ error_events = [
     "TakerFeeSendFailed"
 ]
 
+log_path = "/log/log.txt"
 
 def electrum_status_check(node):
     """Does not work due to electrumx external rpc problems,
@@ -68,7 +70,7 @@ def check_error(resp, uuid):  # resp - response dictionary
     """prints error message and returns True if response is {"error": "error_message"}"""
     try:
         if resp.get("error"):
-            with open("../log/log.txt", "a") as log:
+            with open(log_path, "a") as log:
                 log.write("\n error finding uuid: " + str(uuid) + " response " + str(resp) + "resp.get(error)" +
                           str(resp.get("error")) + "\n")
             time.sleep(5)  # kinda prevents my_swap_status method spam
@@ -94,23 +96,23 @@ def check_swap_status(swaps_dict, node_proxy):
                     event_occur.append(event_type)
                     if event_type in error_events:
                         logs = ("\nswap failed uuid: " + str(uuid))
-                        with open("../log/log.txt", "a") as log:
+                        with open(log_path, "a") as log:
                             log.write(logs)
                         swaps_dict.update({uuid: "failed"})
                         break
                     elif event_type == "Finished":
                         logs = ("\nswap success uuid: " + str(uuid))
-                        with open("../log/log.txt", "a") as log:
+                        with open(log_path, "a") as log:
                             log.write(logs)
                         swaps_dict.update({uuid: "success"})
                     else:
                         pass
             logs = ("\nuuid: " + str(uuid) + " event types: " + str(event_occur) + "\n\n")
-            with open("../log/log.txt", "a") as log:
+            with open(log_path, "a") as log:
                 log.write(logs)
         except json.decoder.JSONDecodeError:
             logs = ("\nswap failed uuid: " + str(uuid))
-            with open("../log/log.txt", "a") as log:
+            with open(log_path, "a") as log:
                 log.write(logs)
             swaps_dict.update({uuid: "failed"})
     return swaps_dict
@@ -143,12 +145,12 @@ def main():
                 break
             except Exception as e:
                 logs = ("Retrying connection " + node1 + "\n error:" + str(e) + "\n")
-                with open("../log/log.txt", "a") as log:
+                with open(log_path, "a") as log:
                     log.write(logs)
-                time.sleep(2)
+                    time.sleep(2)
         resp = rpc[i].setgenerate(True, 1)
         logs = (str(resp))
-        with open("../log/log.txt", "a") as log:
+        with open(log_path, "a") as log:
             log.write(logs)
         time.sleep(2)
 
@@ -163,11 +165,12 @@ def main():
                 break
             except Exception as e:
                 logs = ("Retrying connection " + node2 + "\n error:" + str(e) + "\n")
-                with open("../log/log.txt", "a") as log:
+                with open(log_path, "a") as log:
                     log.write(logs)
                 time.sleep(2)
         resp = rpc[i].setgenerate(True, 1)
-        with open("../log/log.txt", "a") as log:
+        logs = (str(resp))
+        with open(log_path, "a") as log:
             log.write(logs)
     time.sleep(2)
     rpc = []
@@ -182,7 +185,7 @@ def main():
                 break
             except Exception as e:
                 logs = ("Retrying connection " + node + "\n error:" + str(e) + "\n")
-                with open("../log/log.txt", "a") as log:
+                with open(log_path, "a") as log:
                     log.write(logs)
                 time.sleep(2)
         i += 1
@@ -195,24 +198,24 @@ def main():
         resp = rpc[i].electrum(coin_a, electrums_a, servers_protocol="TCP", servers_disablecert=True)
         logs = ("pass " + str(i) + " : " + node + " electrum to activate: " + str(electrums_a)
                  + "\n" + "result: " + str(resp) + "\n")
-        with open("../log/log.txt", "a") as log:
+        with open(log_path, "a") as log:
             log.write(logs)
         resp = rpc[i].electrum(coin_b, electrums_b, servers_protocol="TCP", servers_disablecert=True)
         logs = ("pass " + str(i) + " : " + node + " electrum to activate: " + str(electrums_b)
                  + "\n" + "result: " + str(resp) + "\n")
-        with open("../log/log.txt", "a") as log:
+        with open(log_path, "a") as log:
             log.write(logs)
         i += 1
     resp = rpc[-2].setprice(coins[0], coins[1], 1, 100)  # set Alice node
     logs = ("\n" + "\n" + "*"*20 + "\n" + "\n" + "\n" + "Prepare maker" + "\n" + "result: " + str(resp) + "\n")
-    with open("../log/log.txt", "a") as log:
+    with open(log_path, "a") as log:
         log.write(logs)
     time.sleep(10)
     swap_uuids = []
     for i in range(6):
         resp = rpc[-1].buy(coins[0], coins[1], 1, 0.1)
         logs = ("Create order, number: " + str(i) + "\n" + str(resp) + "\n")
-        with open("../log/log.txt", "a") as log:
+        with open(log_path, "a") as log:
             log.write(logs)
         if resp.get("result"):
             swap_uuids.append((resp.get("result")).get("uuid"))
@@ -220,13 +223,13 @@ def main():
             swap_uuids.append((resp.get("error")))
         time.sleep(1)
     logs = ("uuids: " + str(swap_uuids) + "\n")
-    with open("../log/log.txt", "a") as log:
+    with open(log_path, "a") as log:
         log.write(logs)
     time.sleep(10)
-    with open("../log/log.txt", "a") as log:
+    with open(log_path, "a") as log:
         log.write("\n" + "\n" + "\n" + "Waiting for swaps to finish" + "\n" + "\n" + "\n")
     result = swap_status_iterator(swap_uuids, rpc[-1])
-    with open("../log/log.txt", "a") as log:
+    with open(log_path, "a") as log:
         log.write("\n." + "\n." + "\n." + "result" + str(result) + "\n." + "\n." + "\n.")
 
 
