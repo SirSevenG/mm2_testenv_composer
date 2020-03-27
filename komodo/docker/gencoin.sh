@@ -1,2 +1,2 @@
 #! /bin/bash
-./komodod -ac_name=${CHAIN} -ac_cc=${CC} -ac_supply=${SUPPLY} -gen
+komodo-cli -ac_name="${AC}" setgenerate 1
