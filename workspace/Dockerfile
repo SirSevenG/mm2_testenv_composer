@@ -21,8 +21,8 @@ RUN         apt-get update && \
             mkdir /log && \
             touch /log/log.txt && \
             useradd -u 3003 -m swapper && \
-            chown -R swapper:swapper /workdir && \
-            chown -R swapper:swapper /log && \
+            chown -R 3003:3003 /workdir && \
+            chown -R 3003:3003 /log && \
             pip3 install -r /workdir/reqs.txt
 
 USER        swapper
