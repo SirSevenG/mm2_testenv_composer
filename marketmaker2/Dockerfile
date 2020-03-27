@@ -20,7 +20,6 @@ RUN         apt-get update && \
             cd /mmaker2
 #    wget https://raw.githubusercontent.com/jl777/coins/master/coins
 
-USER        swapper
 WORKDIR     /mmaker2
 
 CMD ./start.sh
