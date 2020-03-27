@@ -7,7 +7,8 @@ ARG         DEBIAN_FRONTEND=noninteractive
 ENV         AC=$AC \
             NODE=$NODE \
             MODE=$MODE \
-            GEN=$GEN
+            GEN=$GEN \
+            HOME=/
 
 EXPOSE      8465/tcp
 EXPOSE      11511/tcp
@@ -26,7 +27,8 @@ RUN         mkdir /.zcash-params && \
             apt-get install -y git wget && \
             chmod +x /komodo/src/start && \
             chmod +x /komodo/src/gencoin && \
-            chown -R swapper:swapper /komodo
+            chown -R swapper:swapper /komodo && \
+            chown -R swapper:swapper /.komodo
 
 USER        swapper
 WORKDIR     /komodo/src
