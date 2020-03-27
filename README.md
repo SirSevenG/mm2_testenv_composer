@@ -7,9 +7,9 @@ Based on Docker containers
 1. Install [Docker-ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-engine---community-1)
 2. Get docker-compose with pip 
 ```pip install docker-compose```
-3. Create user 3003, set log catalog ownership
-```chown -R 3003:3003 log/```
-4. Unzip `coin_name.zip` archives in `komodo/docker/bootstrap` to the same folder to bootstrap test chains
+3. Unzip `coin_name.zip` archives in `komodo/docker/bootstrap` to the same folder to bootstrap test chains
+4. Create user 3003, set log catalog ownership
+```chown -R 3003:3003 log/```, bootstraps ownership ```chown -R 3003:3003 komodo/docker/bootstrap```
 5. If needed, modify `example-compose.yml` and `example.env` files.
 6. Execute in repo's root directory:
 ```bash
@@ -30,6 +30,8 @@ After tests it's suggested to stop containers ```docker-compose down``` (or ```c
  ```docker system prune``` to clear containers cache (docker networks) before next run.
 
 [Ctop](https://github.com/bcicen/ctop) is a nice tool to manually monitor system resources usage during test run.
+
+Network scheme: ```[placeholder]```
 
 ### TODOs
 
