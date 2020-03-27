@@ -1,3 +1,2 @@
 #! /bin/bash
-export NODE=${NODE}
-komodod "${AC}" -gen
+komodo-cli -ac_name="${AC}" setgenerate 1
