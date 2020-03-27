@@ -33,6 +33,7 @@ error_events = [
     "TakerFeeSendFailed"
 ]
 
+log_path = "/log/log.txt"
 
 def electrum_status_check(node):
     """Does not work due to electrumx external rpc problems,
@@ -132,7 +133,6 @@ def main():
     kmd_a_pass = "passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9"
     kmd_b_user = "user552075967"
     kmd_b_pass = "pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d"
-    log_path = "/log/log.txt"
 
     i = 0
     rpc = []
@@ -145,14 +145,8 @@ def main():
                 break
             except Exception as e:
                 logs = ("Retrying connection " + node1 + "\n error:" + str(e) + "\n")
-                try:
-                    with open(log_path, "a") as log:
-                        log.write(logs)
-                    time.sleep(2)
-                except PermissionError:
-                    log_path = "./log.txt"
-                    with open(log_path, "a") as log:
-                        log.write(logs)
+                with open(log_path, "a") as log:
+                    log.write(logs)
                     time.sleep(2)
         resp = rpc[i].setgenerate(True, 1)
         logs = (str(resp))
