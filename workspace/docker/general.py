@@ -218,11 +218,17 @@ def main():
     electrums_b = ["electrum_ba:50001", "electrum_bb:50001"]
     coin_a = "WSG"
     coin_b = "BSG"
+    servers_a = []
+    servers_b = []
+    for electrum in electrums_a:
+        servers_a.append({'url': electrum, 'protocol': 'TCP'})
+    for electrum in electrums_b:
+        servers_b.append({'url': electrum, 'protocol': 'TCP'})
     for node in mm_nodes:
         proxy = mm_proxy[node]
-        res = proxy.electrum(coin=coin_a, servers={'url': electrums_a, 'protocol': 'TCP'})
+        res = proxy.electrum(coin=coin_a, servers=servers_a)
         print(res)
-        res = proxy.electrum(coin=coin_b, servers={'url': electrums_b, 'protocol': 'TCP'})
+        res = proxy.electrum(coin=coin_b, servers=servers_b)
         print(res)
         res = proxy.my_balance(coin='WSG')
         print(res)

@@ -33,7 +33,7 @@ volumes:
         driver: ${VOLUMES_DRIVER}
 
 services:
-    
+
     workspace:
         build: ./workspace
         networks:
@@ -47,6 +47,7 @@ services:
             - emx_base
         volumes:
             - ./log/workspace:/log
+        command: ["python3", "saturation.py"]
 
     emx_base:
         build: ./base_emx
@@ -200,68 +201,11 @@ services:
         depends_on:
             - emx_base
 
-    mm_seed_a:
+    mm_seed:
         build: ./marketmaker2
         environment:
             SEED: "True"
             PASSPHRASE: ${PASSPHRASE_A}
-            MM_LOG: /log/log.txt
-        expose:
-          - "7783"
-          - "7793"
-          - "7803"
-          - "80"
-        networks:
-            mm:
-                ipv4_address: 172.28.0.12
-        volumes:
-            - ./log/mm2_seed_a:/log
-        depends_on:
-            - emx_base
-
-    mm_seed_b:
-        build: ./marketmaker2
-        environment:
-            SEED: "True"
-            PASSPHRASE: ${PASSPHRASE_B}
-            MM_LOG: /log/log.txt
-        expose:
-          - "7783"
-          - "7793"
-          - "7803"
-          - "80"
-        networks:
-            mm:
-                ipv4_address: 172.28.0.14
-        volumes:
-            - ./log/mm2_seed_b:/log
-        depends_on:
-            - emx_base
-
-    mm_seed_c:
-        build: ./marketmaker2
-        environment:
-            SEED: "True"
-            PASSPHRASE: ${PASSPHRASE_C}
-            MM_LOG: /log/log.txt
-        expose:
-          - "7783"
-          - "7793"
-          - "7803"
-          - "80"
-        networks:
-            mm:
-                ipv4_address: 172.28.0.16
-        volumes:
-            - ./log/mm2_seed_c:/log
-        depends_on:
-            - emx_base
-
-    mm_seed_d:
-        build: ./marketmaker2
-        environment:
-            SEED: "True"
-            PASSPHRASE: ${PASSPHRASE_D}
             MM_LOG: /log/log.txt
         expose:
           - "7783"

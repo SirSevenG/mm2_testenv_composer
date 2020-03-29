@@ -1,0 +1,316 @@
+version: '3'
+
+networks:
+    white:
+        driver: ${NETWORKS_DRIVER}
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.26.0.0/16
+    black:
+        driver: ${NETWORKS_DRIVER}
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.27.0.0/16
+    mm:
+        driver: ${NETWORKS_DRIVER}
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.28.0.0/16
+
+volumes:
+    komodo_base:
+        driver: ${VOLUMES_DRIVER}
+    komodo_aa:
+        driver: ${VOLUMES_DRIVER}
+    komodo_ab:
+        driver: ${VOLUMES_DRIVER}
+    komodo_ba:
+        driver: ${VOLUMES_DRIVER}
+    komodo_bb:
+        driver: ${VOLUMES_DRIVER}
+
+services:
+    
+    workspace:
+        build: ./workspace
+        networks:
+            mm:
+                ipv4_address: 172.28.0.10
+            black:
+                ipv4_address: 172.27.0.10
+            white:
+                ipv4_address: 172.26.0.10
+        depends_on:
+            - emx_base
+        volumes:
+            - ./log/workspace:/log
+        command: ["python3", "general.py"]
+
+    emx_base:
+        build: ./base_emx
+        image: local/electrumx:latest
+
+    komodo_aa:
+        build: ./komodo
+        environment:
+            AC: ${AC_PARAMS_A}
+            NODE: ${ADD_NODE_AA}
+            MODE: ${SCRIPT_MODE_AA}
+            GEN: ${GEN_AA}
+        expose:
+           - "11511"
+           - "11510"
+        networks:
+            white:
+                ipv4_address: 172.26.0.2
+        depends_on:
+            - emx_base
+
+    komodo_ab:
+        build: ./komodo
+        environment:
+            AC: ${AC_PARAMS_A}
+            NODE: ${ADD_NODE_AA}
+            MODE: ${SCRIPT_MODE_AB}
+            GEN: ${GEN_AB}
+        expose:
+           - "11511"
+           - "11510"
+        networks:
+            white:
+                ipv4_address: 172.26.0.4
+        depends_on:
+            - emx_base
+
+    komodo_ba:
+        build: ./komodo
+        environment:
+            AC: ${AC_PARAMS_B}
+            NODE: ${ADD_NODE_BA}
+            MODE: ${SCRIPT_MODE_BA}
+            GEN: ${GEN_BA}
+        expose:
+           - "8465"
+           - "8464"
+        networks:
+            black:
+                ipv4_address: 172.27.0.2
+        depends_on:
+            - emx_base
+
+    komodo_bb:
+        build: ./komodo
+        environment:
+            AC: ${AC_PARAMS_B}
+            NODE: ${ADD_NODE_BB}
+            MODE: ${SCRIPT_MODE_BB}
+            GEN: ${GEN_BB}
+        expose:
+           - "8465"
+           - "8464"
+        networks:
+            black:
+                ipv4_address: 172.27.0.4
+        depends_on:
+            - emx_base
+
+    electrum_aa:
+        build: ./electrumx
+        environment:
+            SERVICES: tcp://172.28.0.2:50001,ssl://172.28.0.2:50002,wss://172.28.0.2:50004,rpc://0.0.0.0:8000
+            COIN: Komodo
+            DAEMON_URL: http://user4234174465:passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9@komodo_aa:11511
+            DB_DIRECTORY: /data
+            LOG_LEVEL: debug
+        expose:
+            - "50001"
+            - "50002"
+            - "50004"
+            - "8000"
+        networks:
+            white:
+                ipv4_address: 172.26.0.6
+            mm:
+                ipv4_address: 172.28.0.2
+        depends_on:
+            - emx_base
+
+    electrum_ab:
+        build: ./electrumx
+        environment:
+            SERVICES: tcp://172.28.0.4:50001,ssl://172.28.0.4:50002,wss://172.28.0.4:50004,rpc://0.0.0.0:8000
+            COIN: Komodo
+            DAEMON_URL: http://user4234174465:passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9@komodo_ab:11511
+            DB_DIRECTORY: /data
+            LOG_LEVEL: debug
+        expose:
+            - "50001"
+            - "50002"
+            - "50004"
+            - "8000"
+        networks:
+            white:
+                ipv4_address: 172.26.0.8
+            mm:
+                ipv4_address: 172.28.0.4
+        depends_on:
+            - emx_base
+
+    electrum_ba:
+        build: ./electrumx
+        environment:
+            SERVICES: tcp://172.28.0.6:50001,ssl://172.28.0.6:50002,wss://172.28.0.6:50004,rpc://0.0.0.0:8000
+            COIN: Komodo
+            DAEMON_URL: http://user552075967:pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d@komodo_ba:8465
+            DB_DIRECTORY: /data
+            LOG_LEVEL: debug
+        expose:
+            - "50001"
+            - "50002"
+            - "50004"
+            - "8000"
+        networks:
+            black:
+                ipv4_address: 172.27.0.6
+            mm:
+                ipv4_address: 172.28.0.6
+        depends_on:
+            - emx_base
+
+    electrum_bb:
+        build: ./electrumx
+        environment:
+            SERVICES: tcp://172.28.0.8:50001,ssl://172.28.0.8:50002,wss://172.28.0.8:50004,rpc://0.0.0.0:8000
+            COIN: Komodo
+            DAEMON_URL: http://user552075967:pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d@komodo_bb:8465
+            DB_DIRECTORY: /data
+            LOG_LEVEL: debug
+        expose:
+            - "50001"
+            - "50002"
+            - "50004"
+            - "8000"
+        networks:
+            black:
+                ipv4_address: 172.27.0.8
+            mm:
+                ipv4_address: 172.28.0.8
+        depends_on:
+            - emx_base
+
+    mm_seed_a:
+        build: ./marketmaker2
+        environment:
+            SEED: "True"
+            PASSPHRASE: ${PASSPHRASE_A}
+            MM_LOG: /log/log.txt
+        expose:
+          - "7783"
+          - "7793"
+          - "7803"
+          - "80"
+        networks:
+            mm:
+                ipv4_address: 172.28.0.12
+        volumes:
+            - ./log/mm2_seed_a:/log
+        depends_on:
+            - emx_base
+
+    mm_seed_b:
+        build: ./marketmaker2
+        environment:
+            SEED: "True"
+            PASSPHRASE: ${PASSPHRASE_B}
+            MM_LOG: /log/log.txt
+        expose:
+          - "7783"
+          - "7793"
+          - "7803"
+          - "80"
+        networks:
+            mm:
+                ipv4_address: 172.28.0.14
+        volumes:
+            - ./log/mm2_seed_b:/log
+        depends_on:
+            - emx_base
+
+    mm_seed_c:
+        build: ./marketmaker2
+        environment:
+            SEED: "True"
+            PASSPHRASE: ${PASSPHRASE_C}
+            MM_LOG: /log/log.txt
+        expose:
+          - "7783"
+          - "7793"
+          - "7803"
+          - "80"
+        networks:
+            mm:
+                ipv4_address: 172.28.0.16
+        volumes:
+            - ./log/mm2_seed_c:/log
+        depends_on:
+            - emx_base
+
+    mm_seed_d:
+        build: ./marketmaker2
+        environment:
+            SEED: "True"
+            PASSPHRASE: ${PASSPHRASE_D}
+            MM_LOG: /log/log.txt
+        expose:
+          - "7783"
+          - "7793"
+          - "7803"
+          - "80"
+        networks:
+            mm:
+                ipv4_address: 172.28.0.18
+        volumes:
+            - ./log/mm2_seed_d:/log
+        depends_on:
+            - emx_base
+
+    mm_swapper_a:
+        build: ./marketmaker2
+        environment:
+            SEED: "False"
+            PASSPHRASE: ${PASSPHRASE_CLIENT_A}
+            MM_LOG: /log/log.txt
+        expose:
+          - "7783"
+          - "7793"
+          - "7803"
+          - "80"
+        networks:
+            mm:
+                ipv4_address: 172.28.0.20
+        volumes:
+            - ./log/mm2_swapper_a:/log
+        depends_on:
+            - emx_base
+
+    mm_swapper_b:
+        build: ./marketmaker2
+        environment:
+            SEED: "False"
+            PASSPHRASE: ${PASSPHRASE_CLIENT_B}
+            MM_LOG: /log/log.txt
+        expose:
+          - "7783"
+          - "7793"
+          - "7803"
+          - "80"
+        networks:
+            mm:
+                ipv4_address: 172.28.0.22
+        volumes:
+            - ./log/mm2_swapper_b:/log
+        depends_on:
+            - emx_base
