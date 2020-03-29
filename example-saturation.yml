@@ -216,7 +216,7 @@ services:
             mm:
                 ipv4_address: 172.28.0.12
         volumes:
-            - ./log/mm2_seed_d:/log
+            - ./log/mm2_seed:/log
         depends_on:
             - emx_base
 
@@ -233,7 +233,7 @@ services:
           - "80"
         networks:
             mm:
-                ipv4_address: 172.28.0.14
+                ipv4_address: 172.168.0.14
         volumes:
             - ./log/mm2_swapper_a:/log
         depends_on:
@@ -252,7 +252,7 @@ services:
           - "80"
         networks:
             mm:
-                ipv4_address: 172.28.0.16
+                ipv4_address: 127.28.0.16
         volumes:
             - ./log/mm2_swapper_b:/log
         depends_on:
