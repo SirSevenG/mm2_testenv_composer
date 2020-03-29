@@ -7,6 +7,7 @@ from io import BytesIO as StringIO
 from slickrpc.exc import RpcException
 from itertools import count
 from pycurl import Curl
+from pycurl import error as Perror
 
 
 # TODO: and logic for test
@@ -193,8 +194,13 @@ def main():
     except ConnectionAbortedError as e:
         raise Exception("Connection error! Probably no daemon on selected port. Error: ", e)
 
-    res = proxy.help()
-    print(res)
+    while True:
+        try:
+            res = proxy.help()
+            print(res)
+            break
+        except Perror:
+            print('MM2 does not respond yet')
     res = proxy.my_balance('WSG')
     print(res)
     res = proxy.my_balance('BSG')
