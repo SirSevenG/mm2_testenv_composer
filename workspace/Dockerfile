@@ -23,7 +23,7 @@ RUN         apt-get update && \
             useradd -u 3003 -m swapper && \
             chown -R 3003:3003 /workdir && \
             chown -R 3003:3003 /log && \
-            python3 -m pip install --upgrade pip
+            python3 -m pip install --upgrade pip && \
             python3 -m pip install -r /workdir/reqs.txt
 
 USER        swapper
