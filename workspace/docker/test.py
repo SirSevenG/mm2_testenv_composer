@@ -145,12 +145,16 @@ class MMProxy(object):
         id = next(self._ids)
         upass = self.userpass
 
-        def call(*params):
-            postdata = ujson.dumps({"jsonrpc": "2.0",
-                                    "userpass": upass,
-                                    "method": method,
-                                    "params": params,
-                                    "id": id})
+        def call(**params):
+            post_dict = {
+                'jsonrpc': '2.0',
+                'userpass': upass,
+                'method': method,
+                'id': id
+            }
+            for param, value in params.items():
+                post_dict.update({param: value})
+            postdata = ujson.dumps(post_dict)
             body = StringIO()
             conn.setopt(conn.WRITEFUNCTION, body.write)
             conn.setopt(conn.POSTFIELDS, postdata)
@@ -158,6 +162,7 @@ class MMProxy(object):
             conn.perform()
             try:
                 resp = ujson.loads(body.getvalue())
+                print('\n\n', type(resp), '\n\n')
             except ValueError:
                 resp = str(body.getvalue().decode('utf=8'))
             return resp
