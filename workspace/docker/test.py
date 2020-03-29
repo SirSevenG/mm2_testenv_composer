@@ -182,29 +182,56 @@ class MMProxy(object):
 
 
 def main():
+    mm_nodes = ["mm_seed_a", "mm_seed_b", "mm_seed_c", "mm_seed_d", "mm_swapper_a", "mm_swapper_b"]
+    mm_proxy = {}
 
-    node_params_dictionary = {
-        'userpass': MM2_USERPASS,  # userpass to be used in json
-        'rpchost': 'mm_swapper_a',
-        'rpcport': 7783
-    }
+    for node in mm_nodes:  # connect to all mm nodes
+        node_params_dictionary = {
+            'userpass': MM2_USERPASS,  # userpass to be used in json
+            'rpchost': node,
+            'rpcport': 7783
+        }
 
-    try:
-        proxy = MMProxy(node_params_dictionary, timeout=360)
-    except ConnectionAbortedError as e:
-        raise Exception("Connection error! Probably no daemon on selected port. Error: ", e)
-
-    while True:
         try:
-            res = proxy.help()
-            print(res)
-            break
-        except Perror:
-            print('MM2 does not respond yet')
-    res = proxy.my_balance(coin='WSG')
-    print(res)
-    res = proxy.my_balance(coin='WSG')
-    print(res)
+            proxy = MMProxy(node_params_dictionary, timeout=360)
+        except ConnectionAbortedError as e:
+            raise Exception("Connection error! Probably no daemon on selected port. Error: ", e)
+        mm_proxy.update({node: proxy})
+
+        # check connections
+        while True:
+            attempt = 0
+            try:
+                res = proxy.version()
+                print(res)
+                break
+            except Perror as e:
+                attempt += 1
+                print('MM2 does not respond, retrying')
+                if attempt >= 15:
+                    raise Exception("Connection error ", e)
+                else:
+                    time.sleep(5)
+
+    # enable coins
+    electrums_a = ["electrum_aa:50001", "electrum_ab:50001"]
+    electrums_b = ["electrum_ba:50001", "electrum_bb:50001"]
+    coin_a = "WSG"
+    coin_b = "BSG"
+    for node in mm_nodes:
+        proxy = mm_proxy[node]
+        res = proxy.electrum(coin=coin_a, servers={'url': electrums_a, 'protocol': 'TCP'})
+        print(res)
+        res = proxy.electrum(coin=coin_b, servers={'url': electrums_b, 'protocol': 'TCP'})
+        print(res)
+        res = proxy.my_balance(coin='WSG')
+        print(res)
+        res = proxy.my_balance(coin='BSG')
+        print(res)
+
+    # dummy loop to keep container up
+    while True:
+        pass
 
 
 if __name__ == "__main__":
