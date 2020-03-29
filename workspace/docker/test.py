@@ -201,9 +201,9 @@ def main():
             break
         except Perror:
             print('MM2 does not respond yet')
-    res = proxy.my_balance('WSG')
+    res = proxy.my_balance(coin='WSG')
     print(res)
-    res = proxy.my_balance('BSG')
+    res = proxy.my_balance(coin='WSG')
     print(res)
 
 
