@@ -206,7 +206,7 @@ services:
         environment:
             SEED: "True"
             PASSPHRASE: ${PASSPHRASE_A}
-            MM_LOG: /log/log.txt
+            MM_LOG: "/log/mm.log"
         expose:
           - "7783"
           - "7793"
@@ -225,7 +225,7 @@ services:
         environment:
             SEED: "False"
             PASSPHRASE: ${PASSPHRASE_CLIENT_A}
-            MM_LOG: /log/log.txt
+            MM_LOG: "/log/mm.log"
         expose:
           - "7783"
           - "7793"
@@ -244,7 +244,7 @@ services:
         environment:
             SEED: "False"
             PASSPHRASE: ${PASSPHRASE_CLIENT_B}
-            MM_LOG: /log/log.txt
+            MM_LOG: "/log/mm.log"
         expose:
           - "7783"
           - "7793"
