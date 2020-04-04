@@ -124,7 +124,7 @@ def main():
     log.info("mm2 nodes connected, coins enabled")
     maker = proxy_dict.get('mm_swapper_a')
     taker = proxy_dict.get('mm_swapper_b')
-    orders_broadcast = 15  # also sep
+    orders_broadcast_init = orders_broadcast = 15  # also sep
     info_orders = orders_broadcast
     check = True  # init "pass" value
     log.info("Entering main test loop")
@@ -152,7 +152,7 @@ def main():
         log.debug("Taker to Created orders amount check passed: %s", str(check_str))
         log.info("Test iteration finished")
         info_orders = orders_broadcast
-        orders_broadcast += orders_broadcast
+        orders_broadcast += orders_broadcast_init
     log.info("Test result. Network saturated with orders broadcasted: %s", str(info_orders))
 
 
