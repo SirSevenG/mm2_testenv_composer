@@ -146,10 +146,10 @@ def main():
         log.debug("Taker node orders available: %s", str(taker_orders))
         check = check_saturation(maker_orders, taker_orders)
         check_str = 'passed' if check else 'failed'  # bool can not be explicitly converted
-        log.debug("Maker to Taker orders amount check: ", str(check_str))
+        log.debug("Maker to Taker orders amount check: %s", str(check_str))
         check = check_saturation(orders_broadcast, taker_orders)
         check_str = 'passed' if check else 'failed'
-        log.debug("Taker to Created orders amount check passed: ", str(check_str))
+        log.debug("Taker to Created orders amount check passed: %s", str(check_str))
         log.info("Test iteration finished")
         info_orders = orders_broadcast
         orders_broadcast += orders_broadcast
