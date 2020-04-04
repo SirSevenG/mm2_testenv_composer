@@ -16,7 +16,6 @@ def init_logs(logfile="/log/saturation.log"):
         os.remove(logfile)
     with open(logfile, 'a') as f:
         pass  # creates empty file for logs
-
     logging.basicConfig(level=logging.DEBUG)
     log = logging.getLogger(__name__)
     c_handler = logging.StreamHandler()
@@ -72,7 +71,7 @@ def init_connection(mm2userpass: str, mm_nodes: list, electrums_base: list, elec
         proxy = mm_proxy[node]
         attempt = 0
         while attempt < 40:
-            res1 = proxy.electrum(coin=base, servers=servers_base)
+            proxy.electrum(coin=base, servers=servers_base)
             res2 = proxy.electrum(coin=rel, servers=servers_rel)
             if not res2.get('error'):
                 break
@@ -99,9 +98,6 @@ def get_orders_amount(proxy: MMProxy, base: str, rel: str) -> dict:
 def check_saturation(vol1: int, vol2: int) -> bool:
     """Check if percentage of orders received is acceptable"""
     acceptance = 0.95
-    # debug
-    print(vol1)
-    print(vol2)
     try:
         if vol2/vol1 >= acceptance:
             return True
@@ -124,7 +120,7 @@ def main():
     log.info("mm2 nodes connected, coins enabled")
     maker = proxy_dict.get('mm_swapper_a')
     taker = proxy_dict.get('mm_swapper_b')
-    orders_broadcast_init = orders_broadcast = 15  # also sep
+    orders_broadcast_init = orders_broadcast = 15
     info_orders = orders_broadcast
     check = True  # init "pass" value
     log.info("Entering main test loop")
@@ -145,7 +141,7 @@ def main():
         taker_orders = get_orders_amount(taker, coin_a, coin_b).get('amount')
         log.debug("Taker node orders available: %s", str(taker_orders))
         check = check_saturation(maker_orders, taker_orders)
-        check_str = 'passed' if check else 'failed'  # bool can not be explicitly converted
+        check_str = 'passed' if check else 'failed'  # bool can not be explicitly converted to str
         log.debug("Maker to Taker orders amount check: %s", str(check_str))
         check = check_saturation(orders_broadcast, taker_orders)
         check_str = 'passed' if check else 'failed'
