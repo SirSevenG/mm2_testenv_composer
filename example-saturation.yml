@@ -43,7 +43,7 @@ services:
     depends_on:
       - emx_base
     volumes:
-      - ./log/workspaceL/log
+      - ./log/workspace:/log
     command: ["python3", "saturation.py"]
 
   emx_base:
