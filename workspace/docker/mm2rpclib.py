@@ -36,11 +36,9 @@ class MMProxy:
             body = StringIO()
             conn.setopt(conn.WRITEFUNCTION, body.write)
             conn.setopt(conn.POSTFIELDS, postdata)
-            print(postdata)
             conn.perform()
             try:
                 resp = ujson.loads(body.getvalue())
-                print('\n\n', type(resp), '\n\n')
             except ValueError:
                 resp = str(body.getvalue().decode('utf=8'))
             return resp
