@@ -26,26 +26,15 @@ after `$ sudo test_run.sh dummy`.
 ## How to build:
 
 1. Install [Docker-ce](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-docker-engine---community-1)
-<<<<<<< HEAD
 2. Get docker-compose with pip
-=======
-2. Get docker-compose with pip 
->>>>>>> master
 ```pip install docker-compose```
 3. Unzip `coin_name.zip` archives in `komodo/docker/bootstrap` to the same folder to bootstrap test chains
 4. Create user 3003, set log catalog ownership
 ```chown -R 3003:3003 log/```, bootstraps ownership ```chown -R 3003:3003 komodo/docker/bootstrap```
-<<<<<<< HEAD
 5. If needed, modify `example-testname.yml` and `example.env` files.
 6. Execute in root directory:
 ```bash
 $ cp example-testname.yml docker-compose.yml
-=======
-5. If needed, modify `example-compose.yml` and `example.env` files.
-6. Execute in repo's root directory:
-```bash
-$ cp example-compose.yml docker-compose.yml
->>>>>>> master
 $ cp example.env .env
 $ sudo docker-compose up --build  # with root privileges
 ```
