@@ -30,7 +30,7 @@ def test_swaps():
     log.info("MM2 nodes connected, preparing maker order")
     resp = proxy_dict.get('mm_swapper_a').setprice(base=coins[0], rel=coins[1], prcie='1', volume='100')
     time.sleep(30)  # time to propagate maker order
-    log.debug("Maker order created: %s", str(resp.get('result')))
+    log.debug("Maker order created: %s", str(resp))
     swap_uuids = []
     for i in range(6):
         resp = proxy_dict.get('mm_swapper_b').buy(base=coins[0], rel=coins[1], price='1', volume='0.1')
@@ -39,9 +39,9 @@ def test_swaps():
             swap_uuids.append((resp.get("result")).get("uuid"))
         else:
             swap_uuids.append((resp.get("error")))
-        time.sleep(5)
-    log.debug("uuids: " + str(swap_uuids) + "\n")
+        time.sleep(10)
+    log.debug("uuids: %s", str(swap_uuids))
     time.sleep(10)
-    log.info("\n" + "\n" + "\n" + "Waiting for swaps to finish" + "\n" + "\n" + "\n")
+    log.info("Waiting for swaps to finish")
     result = swap_status_iterator(swap_uuids, proxy_dict.get('mm_swapper_b'))
-    log.info("\n." + "\n." + "\n." + "result" + str(result) + "\n." + "\n." + "\n.")
+    log.info("Test result: %s", str(result))
