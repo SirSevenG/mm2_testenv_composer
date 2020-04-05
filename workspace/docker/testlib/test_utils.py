@@ -11,18 +11,7 @@ def init_logs(logfile="/log/test.log") -> logging:
         os.remove(logfile)
     with open(logfile, 'a') as f:
         pass  # creates empty file for logs
-    logging.basicConfig(level=logging.DEBUG)
     log = logging.getLogger(__name__)
-    c_handler = logging.StreamHandler()
-    f_handler = logging.FileHandler(logfile)
-    c_handler.setLevel(logging.INFO)
-    f_handler.setLevel(logging.DEBUG)
-    c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-    f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    c_handler.setFormatter(c_format)
-    f_handler.setFormatter(f_format)
-    log.addHandler(c_handler)
-    log.addHandler(f_handler)
     return log
 
 
