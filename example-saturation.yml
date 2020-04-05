@@ -55,7 +55,7 @@ services:
       - mm_swapper_b
     volumes:
       - ./log/workspace:/log
-    command: ["python3", "-m", "pytest", "saturation.py", "-s", "-vv"]
+    command: ["python3", "-m", "pytest", "saturation.py"]
 
   emx_base:
     build: ./base_emx
