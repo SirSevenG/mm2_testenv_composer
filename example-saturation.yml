@@ -64,6 +64,7 @@ services:
   komodo_aa:
     build: ./komodo
     environment:
+      TAG: ${KMD_TAG}
       AC: ${AC_PARAMS_A}
       NODE: ${ADD_NODE_AA}
       MODE: ${SCRIPT_MODE_AA}
@@ -80,6 +81,7 @@ services:
   komodo_ab:
     build: ./komodo
     environment:
+      TAG: ${KMD_TAG}
       AC: ${AC_PARAMS_A}
       NODE: ${ADD_NODE_AB}
       MODE: ${SCRIPT_MODE_AB}
@@ -96,6 +98,7 @@ services:
   komodo_ba:
     build: ./komodo
     environment:
+      TAG: ${KMD_TAG}
       AC: ${AC_PARAMS_B}
       NODE: ${ADD_NODE_BA}
       MODE: ${SCRIPT_MODE_BA}
@@ -112,6 +115,7 @@ services:
   komodo_bb:
     build: ./komodo
     environment:
+      TAG: ${KMD_TAG}
       AC: ${AC_PARAMS_B}
       NODE: ${ADD_NODE_BB}
       MODE: ${SCRIPT_MODE_BB}
@@ -212,6 +216,7 @@ services:
   mm_swapper_a:
     build: ./marketmaker2
     environment:
+      TAG: ${MM2_TAG}
       SEED: "False"
       PASSPHRASE: ${PASSPHRASE_CLIENT_A}
       MM_LOG: "/log/mm.log"
@@ -232,6 +237,7 @@ services:
     command: ["./start_saturation.sh"]
 
   mm_swapper_b:
+    TAG: ${MM2_TAG}
     build: ./marketmaker2
     environment:
       SEED: "False"
@@ -254,6 +260,7 @@ services:
     command: ["./start_saturation.sh"]
 
   mm_seed:
+    TAG: ${MM2_TAG}
     build: ./marketmaker2
     environment:
       SEED: "True"

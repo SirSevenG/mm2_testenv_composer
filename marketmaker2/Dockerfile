@@ -1,4 +1,6 @@
-FROM        komodoofficial/atomicdexapi:beta-2.0.1781
+ARG         BUILD_TAG=$TAG
+
+FROM        komodoofficial/atomicdexapi:$BUILD_TAG
 LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
 # get env vars from composer

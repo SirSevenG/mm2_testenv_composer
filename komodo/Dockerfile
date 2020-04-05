@@ -1,4 +1,6 @@
-FROM        komodoofficial/komodo:cd_release_f04f510_dev
+ARG         BUILD_TAG=$TAG
+
+FROM        komodoofficial/komodo:$BUILD_TAG
 LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
 ARG         DEBIAN_FRONTEND=noninteractive
