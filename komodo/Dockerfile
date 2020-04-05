@@ -1,6 +1,6 @@
-ARG         BUILD_TAG=$TAG
+ARG         BUILD_TAG=komodoofficial/komodo:cd_release_318ec36_dev
 
-FROM        komodoofficial/komodo:$BUILD_TAG
+FROM        $BUILD_TAG
 LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
 ARG         DEBIAN_FRONTEND=noninteractive

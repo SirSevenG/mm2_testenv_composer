@@ -64,7 +64,6 @@ services:
   komodo_aa:
     build: ./komodo
     environment:
-      TAG: ${KMD_TAG}
       AC: ${AC_PARAMS_A}
       NODE: ${ADD_NODE_AA}
       MODE: ${SCRIPT_MODE_AA}
@@ -81,7 +80,6 @@ services:
   komodo_ab:
     build: ./komodo
     environment:
-      TAG: ${KMD_TAG}
       AC: ${AC_PARAMS_A}
       NODE: ${ADD_NODE_AB}
       MODE: ${SCRIPT_MODE_AB}
@@ -98,7 +96,6 @@ services:
   komodo_ba:
     build: ./komodo
     environment:
-      TAG: ${KMD_TAG}
       AC: ${AC_PARAMS_B}
       NODE: ${ADD_NODE_BA}
       MODE: ${SCRIPT_MODE_BA}
@@ -115,7 +112,6 @@ services:
   komodo_bb:
     build: ./komodo
     environment:
-      TAG: ${KMD_TAG}
       AC: ${AC_PARAMS_B}
       NODE: ${ADD_NODE_BB}
       MODE: ${SCRIPT_MODE_BB}
@@ -216,7 +212,6 @@ services:
   mm_swapper_a:
     build: ./marketmaker2
     environment:
-      TAG: ${MM2_TAG}
       SEED: "False"
       PASSPHRASE: ${PASSPHRASE_CLIENT_A}
       MM_LOG: "/log/mm.log"
@@ -239,7 +234,6 @@ services:
   mm_swapper_b:
     build: ./marketmaker2
     environment:
-      TAG: ${MM2_TAG}
       SEED: "False"
       PASSPHRASE: ${PASSPHRASE_CLIENT_B}
       MM_LOG: "/log/mm.log"
@@ -262,7 +256,6 @@ services:
   mm_seed:
     build: ./marketmaker2
     environment:
-      TAG: ${MM2_TAG}
       SEED: "True"
       PASSPHRASE: ${PASSPHRASE_A}
       MM_LOG: "/log/mm.log"
