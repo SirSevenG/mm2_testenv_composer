@@ -42,6 +42,17 @@ services:
         ipv4_address: 172.21.0.10
     depends_on:
       - emx_base
+      - mm_seed
+      - komodo_aa
+      - komodo_ab
+      - komodo_ba
+      - komodo_bb
+      - electrum_aa
+      - electrum_ab
+      - electrum_ba
+      - electrum_bb
+      - mm_swapper_a
+      - mm_swapper_b
     volumes:
       - ./log/workspace:/log
     command: ["python3", "saturation.py"]
