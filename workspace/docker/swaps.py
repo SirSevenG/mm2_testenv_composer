@@ -13,8 +13,8 @@ def test_swaps():
     electrums_a = ["electrum_aa:50001", "electrum_ab:50001"]
     electrums_b = ["electrum_ba:50001", "electrum_bb:50001"]
     userpass = "OHSHITHEREWEGOAGAIN"
-    kmd_a_nodes = ["komodo_aa", "komodo_ab"]
-    kmd_b_nodes = ["komodo_ba", "komodo_bb"]
+    kmd_a_nodes = ["komodo_aa:11511", "komodo_ab:11511"]
+    kmd_b_nodes = ["komodo_ba:8465", "komodo_bb:8465"]
     kmd_a_user = "user4234174465"
     kmd_a_pass = "passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9"
     kmd_b_user = "user552075967"

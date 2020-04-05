@@ -92,7 +92,7 @@ def komodo_setgenerate(kmd_nodes: list, user: str, passwd: str) -> bool:
     attempt = 0
     rpc = []
     for node in kmd_nodes:
-        node = "http://" + user + ':' + passwd + '@' + node + ":11511"
+        node = "http://" + user + ':' + passwd + '@' + node
         rpc.append(KMDProxy(node))
         while attempt < 40:  # Check node is active
             try:
