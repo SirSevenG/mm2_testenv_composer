@@ -19,7 +19,7 @@ ENV         PACKS="python3.7 \
 RUN         apt-get update && \
             apt-get -y install -q $PACKS && \
             mkdir /log && \
-            touch /log/log.txt && \
+            touch /log/test.log && \
             useradd -u 3003 -m swapper && \
             chown -R 3003:3003 /workdir && \
             chown -R 3003:3003 /log && \
