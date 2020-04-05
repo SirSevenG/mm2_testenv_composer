@@ -3,3 +3,4 @@ setuptools
 ujson
 pycurl
 pytest
+slick-bitcoinrpc

@@ -47,7 +47,7 @@ services:
             - emx_base
         volumes:
             - ./log/workspace:/log
-        command: ["python3", "general.py"]
+        command: ["python3", "-m", "pytest", "swaps.py", "-s", "-vv"]
 
     emx_base:
         build: ./base_emx

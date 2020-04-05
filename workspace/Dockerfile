@@ -29,4 +29,4 @@ RUN         apt-get update && \
 USER        swapper
 WORKDIR     /workdir
 
-CMD ["python3", "test.py"]
+CMD ["python3", "-m", "pytest", "test.py", "-s", "-vv"]

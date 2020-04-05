@@ -1,10 +1,10 @@
-import json
+from testlib.test_utils import init_connection, init_logs, komodo_setgenerate
 import time
+import requests
 import os
 import ast
-from mm2rpclib import MMProxy
-from pycurl import error as Perror
-
+from slickrpc import Proxy
+import pytest
 
 success_events = [
     "Started",
@@ -32,8 +32,6 @@ error_events = [
     "MakerPaymentValidateFailed",
     "TakerFeeSendFailed"
 ]
-
-log_path = "/log/log.txt"
 
 
 def swap_status_iterator(uuids_list, node_proxy):
@@ -105,66 +103,83 @@ def check_swap_status(swaps_dict, node_proxy):
             swaps_dict.update({uuid: "failed"})
     return swaps_dict
 
-MM2_USERPASS = 'OHSHITHEREWEGOAGAIN'
 
-def main():
-    mm_nodes = ["mm_seed_a", "mm_seed_b", "mm_seed_c", "mm_seed_d", "mm_swapper_a", "mm_swapper_b"]
-    mm_proxy = {}
-
-    for node in mm_nodes:  # connect to all mm nodes
-        node_params_dictionary = {
-            'userpass': MM2_USERPASS,  # userpass to be used in json
-            'rpchost': node,
-            'rpcport': 7783
-        }
-
-        try:
-            proxy = MMProxy(node_params_dictionary, timeout=360)
-        except ConnectionAbortedError as e:
-            raise Exception("Connection error! Probably no daemon on selected port. Error: ", e)
-        mm_proxy.update({node: proxy})
-
-        # check connections
-        while True:
-            attempt = 0
-            try:
-                res = proxy.version()
-                print(res)
-                break
-            except Perror as e:
-                attempt += 1
-                print('MM2 does not respond, retrying')
-                if attempt >= 15:
-                    raise Exception("Connection error ", e)
-                else:
-                    time.sleep(5)
-
-    # enable coins
-    electrums_a = ["electrum_aa:50001", "electrum_ab:50001"]
-    electrums_b = ["electrum_ba:50001", "electrum_bb:50001"]
+def test_swaps():
+    log = init_logs(logfile="/log/swaps.log")
+    nodes = ["mm_seed_a", "mm_seed_b", "mm_seed_c", "mm_seed_d", "mm_swapper_a", "mm_swapper_b"]
     coin_a = "WSG"
     coin_b = "BSG"
-    servers_a = []
-    servers_b = []
-    for electrum in electrums_a:
-        servers_a.append({'url': electrum, 'protocol': 'TCP'})
-    for electrum in electrums_b:
-        servers_b.append({'url': electrum, 'protocol': 'TCP'})
-    for node in mm_nodes:
-        proxy = mm_proxy[node]
-        res = proxy.electrum(coin=coin_a, servers=servers_a)
-        print(res)
-        res = proxy.electrum(coin=coin_b, servers=servers_b)
-        print(res)
-        res = proxy.my_balance(coin='WSG')
-        print(res)
-        res = proxy.my_balance(coin='BSG')
-        print(res)
+    coins = [coin_a, coin_b]
+    electrums_a = ["electrum_aa:50001", "electrum_ab:50001"]
+    electrums_b = ["electrum_ba:50001", "electrum_bb:50001"]
+    userpass = "OHSHITHEREWEGOAGAIN"
+    kmd_a_nodes = ["komodo_aa", "komodo_ab"]
+    kmd_b_nodes = ["komodo_ba", "komodo_bb"]
+    kmd_a_user = "user4234174465"
+    kmd_a_pass = "passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9"
+    kmd_b_user = "user552075967"
+    kmd_b_pass = "pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d"
 
-    # dummy loop to keep container up
-    while True:
-        pass
+    log.info("Checking connection to coin nodes")
+    komodo_setgenerate(kmd_a_nodes, kmd_a_user, kmd_a_pass)
+    komodo_setgenerate(kmd_b_nodes, kmd_b_user, kmd_b_pass)
+    log.info("Coin nodes connected, mining enabled")
 
-
-if __name__ == "__main__":
-    main()
+    rpc = []
+    i = 0
+    # log.write("\n" + "\n" + "\n" + str(electrum_status_check("electrum_aa:50001")) + "\n" + "\n" + "\n")
+    for node in nodes:
+        node = "http://" + node + ":7783"
+        rpc.append(MMtwo(node, userpass))
+        while True:  # Check node is active
+            try:
+                rpc[i].version()
+                break
+            except Exception as e:
+                logs = ("Retrying connection " + node + "\n error:" + str(e) + "\n")
+                with open(log_path, "a") as log:
+                    log.write(logs)
+                time.sleep(2)
+        i += 1
+    # Enable BSG and WSG coins on all nodes
+    rpc = []
+    i = 0
+    for node in nodes:
+        node = "http://" + node + ":7783"
+        rpc.append(MMtwo(node, userpass))
+        resp = rpc[i].electrum(coin_a, electrums_a, servers_protocol="TCP", servers_disablecert=True)
+        logs = ("pass " + str(i) + " : " + node + " electrum to activate: " + str(electrums_a)
+                 + "\n" + "result: " + str(resp) + "\n")
+        with open(log_path, "a") as log:
+            log.write(logs)
+        resp = rpc[i].electrum(coin_b, electrums_b, servers_protocol="TCP", servers_disablecert=True)
+        logs = ("pass " + str(i) + " : " + node + " electrum to activate: " + str(electrums_b)
+                 + "\n" + "result: " + str(resp) + "\n")
+        with open(log_path, "a") as log:
+            log.write(logs)
+        i += 1
+    resp = rpc[-2].setprice(coins[0], coins[1], 1, 100)  # set Alice node
+    logs = ("\n" + "\n" + "*"*20 + "\n" + "\n" + "\n" + "Prepare maker" + "\n" + "result: " + str(resp) + "\n")
+    with open(log_path, "a") as log:
+        log.write(logs)
+    time.sleep(10)
+    swap_uuids = []
+    for i in range(6):
+        resp = rpc[-1].buy(coins[0], coins[1], 1, 0.1)
+        logs = ("Create order, number: " + str(i) + "\n" + str(resp) + "\n")
+        with open(log_path, "a") as log:
+            log.write(logs)
+        if resp.get("result"):
+            swap_uuids.append((resp.get("result")).get("uuid"))
+        else:
+            swap_uuids.append((resp.get("error")))
+        time.sleep(1)
+    logs = ("uuids: " + str(swap_uuids) + "\n")
+    with open(log_path, "a") as log:
+        log.write(logs)
+    time.sleep(10)
+    with open(log_path, "a") as log:
+        log.write("\n" + "\n" + "\n" + "Waiting for swaps to finish" + "\n" + "\n" + "\n")
+    result = swap_status_iterator(swap_uuids, rpc[-1])
+    with open(log_path, "a") as log:
+        log.write("\n." + "\n." + "\n." + "result" + str(result) + "\n." + "\n." + "\n.")
