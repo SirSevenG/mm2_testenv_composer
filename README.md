@@ -56,5 +56,4 @@ After tests it's suggested to stop containers ```docker-compose down``` (or ```c
 
 [Ctop](https://github.com/bcicen/ctop) is a nice tool to manually monitor system resources usage during test run.
 
-Network scheme: ```[placeholder]```
-
+[Network scheme](https://docs.google.com/drawings/d/1BOugSFhBnTUBYBvzkUinmjayKPhAmXcxWEKpqZFHCHE/edit?usp=sharing)
