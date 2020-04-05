@@ -151,7 +151,7 @@ def check_swap_status(swaps_dict: dict, node_proxy: MMProxy) -> dict:
                 event_occur.append(event_type)
                 if event_type in error_events:
                     print("swap failed uuid: " + str(uuid))
-                    swaps_dict.update({uuid: 'failed'})
+                    swaps_dict.update({uuid: ('failed, event: ' + event_type)})
                     break
                 elif event_type == 'Finished':
                     print("swap success uuid: " + str(uuid))
