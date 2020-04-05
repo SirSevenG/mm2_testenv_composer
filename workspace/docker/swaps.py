@@ -1,4 +1,4 @@
-from .testlib.test_utils import init_connection, init_logs, komodo_setgenerate, swap_status_iterator
+from testlib.test_utils import init_connection, init_logs, komodo_setgenerate, swap_status_iterator
 import time
 import pytest
 
