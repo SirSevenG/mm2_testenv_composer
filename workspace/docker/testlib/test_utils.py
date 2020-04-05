@@ -1,4 +1,4 @@
-from mm2proxy import MMProxy
+from .mm2proxy import MMProxy
 from slickrpc import Proxy as KMDProxy
 from pycurl import error as perror
 import time
