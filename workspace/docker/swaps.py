@@ -5,7 +5,7 @@ import pytest
 
 def test_swaps():
     """Creates 6 swaps and logs swaps result"""
-    log = init_logs(logfile="/log/swaps.log")
+    log = init_logs()
     nodes = ["mm_seed_a", "mm_seed_b", "mm_seed_c", "mm_seed_d", "mm_swapper_a", "mm_swapper_b"]
     coin_a = "WSG"
     coin_b = "BSG"

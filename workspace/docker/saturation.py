@@ -2,12 +2,9 @@ from testlib.test_utils import init_connection, init_logs, get_orders_amount, ch
 import time
 import pytest
 
-# TODO:
-# 6. pytest implementation
-
 
 def test_saturation():
-    log = init_logs(logfile="/log/saturation.log")
+    log = init_logs()
     userpass = 'OHSHITHEREWEGOAGAIN'
     mm_nodes = ['mm_seed', 'mm_swapper_a', 'mm_swapper_b']
     electrums_a = ["electrum_aa:50001", "electrum_ab:50001"]
