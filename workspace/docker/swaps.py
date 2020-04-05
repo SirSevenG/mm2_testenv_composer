@@ -28,7 +28,7 @@ def test_swaps():
     log.info("Connecting MM2 nodes and enabling swap coins")
     proxy_dict = init_connection(userpass, nodes, electrums_a, electrums_b, coin_a, coin_b)
     log.info("MM2 nodes connected, preparing maker order")
-    resp = proxy_dict.get('mm_swapper_a').setprice(base=coins[0], rel=coins[1], prcie='1', volume='100')
+    resp = proxy_dict.get('mm_swapper_a').setprice(base=coins[0], rel=coins[1], price='1', volume='100')
     time.sleep(30)  # time to propagate maker order
     log.debug("Maker order created: %s", str(resp))
     swap_uuids = []
