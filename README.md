@@ -13,7 +13,7 @@ $ sudo ./test_run.sh testname
 Test results are logged in `log/workspace/test.log`. Currently available:
 
 ```dummy``` - starts test environment in idle mode,
-to use test env in this mode execute: `$ docker run -it mm2_testenv_composer_workspace_1 /bin/bash`
+to use test env in this mode execute: `$ docker exec -it mm2_testenv_composer_workspace_run_id /bin/bash`
 after `$ sudo test_run.sh dummy`.
  
 ```swaps``` - Performs 6 atomic swaps concurrently.
@@ -49,8 +49,6 @@ workspace - as name suggest, container to execute tests from, writes logs to ./l
 
 wallets - contains two test chains WSG and BSG wallets information
 
-After executing ```docker-compose up``` test.py in workspace container will run, test logs are written in realtime.
- 
 After tests it's suggested to stop containers ```docker-compose down``` (or ```ctrl+C```) and execute
  ```docker system prune``` to clear containers cache (docker networks) before next run.
 
