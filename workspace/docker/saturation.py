@@ -24,7 +24,7 @@ def test_saturation():
         log.info("Clearing up previous orders in 30s")
         maker.cancel_all_orders(cancel_by={'type': 'All'})  # reset orders
         time.sleep(30)
-        log.debug("New iteration, orders to broadcast: %s", str(orders_broadcast))
+        log.info("New iteration, orders to broadcast: %s", str(orders_broadcast))
         for i in range(orders_broadcast):
             log.debug("Order placing num: %s", str(i + 1))
             res = maker.setprice(base=coin_a, rel=coin_b, price='0.1', volume='1', cancel_previous=False)

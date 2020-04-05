@@ -97,7 +97,7 @@ def komodo_setgenerate(kmd_nodes: list, user: str, passwd: str) -> bool:
     attempt = 0
     rpc = []
     for node in kmd_nodes:
-        node = "http://" + user + ":" + passwd + "@" + node + ":11511"
+        node = "http://" + user + ':' + passwd + '@' + node + ":11511"
         rpc.append(KMDProxy(node))
         while attempt < 40:  # Check node is active
             try:
@@ -116,9 +116,9 @@ def komodo_setgenerate(kmd_nodes: list, user: str, passwd: str) -> bool:
 def check_for_errors(resp: dict, uuid: str):  # resp - mm2proxy response dictionary
     """Prints error message and returns True if response is {"error": "error_message"}"""
     try:
-        if resp.get("error"):
+        if resp.get('error'):
             print("\n error finding uuid: " + uuid + " response " + str(resp) + "resp.get(error)" +
-                  str(resp.get("error")) + "\n")
+                  str(resp.get('error')) + "\n")
             return True
         else:
             return False
@@ -145,20 +145,21 @@ def check_swap_status(swaps_dict: dict, node_proxy: MMProxy) -> dict:
         event_occur = []
         resp = node_proxy.my_swap_status(params={'uuid': uuid})
         if check_for_errors(resp, uuid):  # keeps swap status "unknown"
+            event_occur.append('Error_response')
             time.sleep(5)  # prevents my_swap_status method spam
             pass
         else:
-            events_list = resp.get("result").get("events")
+            events_list = resp.get('result').get('events')
             for single_event in events_list:
-                event_type = single_event.get("event").get("type")
+                event_type = single_event.get('event').get('type')
                 event_occur.append(event_type)
                 if event_type in error_events:
                     print("\nswap failed uuid: " + str(uuid))
-                    swaps_dict.update({uuid: "failed"})
+                    swaps_dict.update({uuid: 'failed'})
                     break
-                elif event_type == "Finished":
+                elif event_type == 'Finished':
                     print("\nswap success uuid: " + str(uuid))
-                    swaps_dict.update({uuid: "success"})
+                    swaps_dict.update({uuid: 'success'})
                 else:
                     pass
         print("\nuuid: " + str(uuid) + " event types: " + str(event_occur) + "\n\n")
@@ -167,18 +168,18 @@ def check_swap_status(swaps_dict: dict, node_proxy: MMProxy) -> dict:
 
 def swap_status_iterator(uuids_list: list, node_proxy: MMProxy) -> dict:
     """Builds swaps statuses dictionary"""
-    swaps_d = dict.fromkeys(uuids_list, "unknown")
+    swaps_d = dict.fromkeys(uuids_list, 'unknown')
     while True:
         work_d = {}  # intermediate dictionary to iterate unfinished swaps
         values_list = []
         for key in swaps_d:  # find unfinished swaps
-            if swaps_d.get(key) == "unknown":
-                work_d.update({key: "unknown"})
+            if swaps_d.get(key) == 'unknown':
+                work_d.update({key: 'unknown'})
         res = check_swap_status(work_d, node_proxy)
         for key in res:  # update values
             swaps_d.update({key: res.get(key)})
             values_list.append(res.get(key))
-        if "unknown" not in values_list:  # stop iterator when all swaps are finished
+        if 'unknown' not in values_list:  # stop iterator when all swaps are finished
             break
         time.sleep(20)  # check swap statuses trice per minute
     return swaps_d
