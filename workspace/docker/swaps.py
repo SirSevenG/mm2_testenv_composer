@@ -29,12 +29,12 @@ def test_swaps():
     proxy_dict = init_connection(userpass, nodes, electrums_a, electrums_b, coin_a, coin_b)
     log.info("MM2 nodes connected, preparing maker order")
     resp = proxy_dict.get('mm_swapper_a').setprice(base=coins[0], rel=coins[1], price='1', volume='2')
-    time.sleep(30)  # time to propagate maker order
     log.debug("Maker order created: %s", str(resp))
+    time.sleep(30)  # time to propagate maker order
     swap_uuids = []
     for i in range(6):
         resp = proxy_dict.get('mm_swapper_b').buy(base=coins[0], rel=coins[1], price='1', volume='0.1')
-        log.debug("Create order, number: %s\n%s", str(i), str(resp))
+        log.debug("Create order, number: %s\n%s", str(i + 1), str(resp))
         if resp.get("result"):
             swap_uuids.append((resp.get("result")).get("uuid"))
         else:

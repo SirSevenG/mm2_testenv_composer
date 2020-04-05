@@ -136,6 +136,7 @@ def check_swap_status(swaps_dict: dict, node_proxy: MMProxy) -> dict:
         "MakerPaymentValidateFailed",
         "TakerFeeSendFailed"
     ]
+    i = 0
     for uuid in swaps_dict:
         event_occur = []
         resp = node_proxy.my_swap_status(params={'uuid': uuid})
@@ -149,15 +150,16 @@ def check_swap_status(swaps_dict: dict, node_proxy: MMProxy) -> dict:
                 event_type = single_event.get('event').get('type')
                 event_occur.append(event_type)
                 if event_type in error_events:
-                    print("\nswap failed uuid: " + str(uuid))
+                    print("swap failed uuid: " + str(uuid))
                     swaps_dict.update({uuid: 'failed'})
                     break
                 elif event_type == 'Finished':
-                    print("\nswap success uuid: " + str(uuid))
+                    print("swap success uuid: " + str(uuid))
                     swaps_dict.update({uuid: 'success'})
                 else:
                     pass
-        print("\nuuid: " + str(uuid) + " event types: " + str(event_occur) + "\n\n")
+        print("Step: " + str(i + 1) + "uuid: " + str(uuid) + " event types: " + str(event_occur))
+        i += 1
     return swaps_dict
 
 
