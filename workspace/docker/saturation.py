@@ -1,4 +1,4 @@
-from testlib.test_utils import init_connection, init_logs, get_orders_amount, check_saturation
+from .testlib.test_utils import init_connection, init_logs, get_orders_amount, check_saturation
 import time
 import pytest
 
