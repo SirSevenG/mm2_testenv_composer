@@ -34,8 +34,8 @@ def init_connection(mm2userpass: str, mm_nodes: list, electrums_base: list, elec
                 break
             except perror as e:
                 attempt += 1
-                print('MM2 does not respond, retrying')
-                if attempt >= 15:
+                print('MM2 does not respond, retrying\nError: ', e)
+                if attempt > 15:
                     raise Exception("Connection error ", e)
                 else:
                     time.sleep(5)

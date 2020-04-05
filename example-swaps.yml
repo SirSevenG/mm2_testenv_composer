@@ -44,7 +44,20 @@ services:
             white:
                 ipv4_address: 172.26.0.10
         depends_on:
-            - emx_base
+            - komodo_aa
+            - komodo_ab
+            - komodo_ba
+            - komodo_bb
+            - mm_seed_a
+            - mm_seed_b
+            - mm_seed_c
+            - mm_seed_d
+            - mm_swapper_a
+            - mm_swapper_b
+            - electrum_aa
+            - electrum_ab
+            - electrum_ba
+            - electrum_bb
         volumes:
             - ./log/workspace:/log
         command: ["python3", "-m", "pytest", "swaps.py"]

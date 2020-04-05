@@ -21,8 +21,8 @@ def test_swaps():
     kmd_b_pass = "pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d"
 
     log.info("Checking connection to coin nodes")
-    komodo_setgenerate(kmd_a_nodes, kmd_a_user, kmd_a_pass)
-    komodo_setgenerate(kmd_b_nodes, kmd_b_user, kmd_b_pass)
+    assert komodo_setgenerate(kmd_a_nodes, kmd_a_user, kmd_a_pass)
+    assert komodo_setgenerate(kmd_b_nodes, kmd_b_user, kmd_b_pass)
     log.info("Coin nodes connected, mining enabled")
 
     log.info("Connecting MM2 nodes and enabling swap coins")
