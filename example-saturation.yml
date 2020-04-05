@@ -62,7 +62,10 @@ services:
     image: local/electrumx:latest
 
   komodo_aa:
-    build: ./komodo
+    build:
+      context: ./komodo
+      args:
+        BUILD_TAG: ${KMD_TAG}
     environment:
       AC: ${AC_PARAMS_A}
       NODE: ${ADD_NODE_AA}
@@ -78,7 +81,10 @@ services:
       - emx_base
 
   komodo_ab:
-    build: ./komodo
+    build:
+      context: ./komodo
+      args:
+        BUILD_TAG: ${KMD_TAG}
     environment:
       AC: ${AC_PARAMS_A}
       NODE: ${ADD_NODE_AB}
@@ -94,7 +100,10 @@ services:
       - emx_base
 
   komodo_ba:
-    build: ./komodo
+    build:
+      context: ./komodo
+      args:
+        BUILD_TAG: ${KMD_TAG}
     environment:
       AC: ${AC_PARAMS_B}
       NODE: ${ADD_NODE_BA}
@@ -110,7 +119,10 @@ services:
       - emx_base
 
   komodo_bb:
-    build: ./komodo
+    build:
+      context: ./komodo
+      args:
+        BUILD_TAG: ${KMD_TAG}
     environment:
       AC: ${AC_PARAMS_B}
       NODE: ${ADD_NODE_BB}
@@ -210,7 +222,10 @@ services:
       - emx_base
 
   mm_swapper_a:
-    build: ./marketmaker2
+    build:
+      context: ./marketmaker2
+      args:
+        BUILD_TAG: ${MM2_TAG}
     environment:
       SEED: "False"
       PASSPHRASE: ${PASSPHRASE_CLIENT_A}
@@ -232,7 +247,10 @@ services:
     command: ["./start_saturation.sh"]
 
   mm_swapper_b:
-    build: ./marketmaker2
+    build:
+      context: ./marketmaker2
+      args:
+        BUILD_TAG: ${MM2_TAG}
     environment:
       SEED: "False"
       PASSPHRASE: ${PASSPHRASE_CLIENT_B}
@@ -254,7 +272,10 @@ services:
     command: ["./start_saturation.sh"]
 
   mm_seed:
-    build: ./marketmaker2
+    build:
+      context: ./marketmaker2
+      args:
+        BUILD_TAG: ${MM2_TAG}
     environment:
       SEED: "True"
       PASSPHRASE: ${PASSPHRASE_A}
