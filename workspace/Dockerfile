@@ -3,6 +3,8 @@ LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
 ARG         DEBIAN_FRONTEND=noninteractive
 
+COPY        docker/ /workdir
+
 ENV         PACKS="python3.7 \
             wget \
             nano \
@@ -16,19 +18,15 @@ ENV         PACKS="python3.7 \
 
 RUN         apt-get update && \
             apt-get -y install -q $PACKS && \
-            mkdir /workdir && \
-            mkdir /log
-
-COPY        docker/ /workdir
-
-RUN         useradd -u 3003 -m swapper && \
-            chown -R swapper:swapper /workdir && \
-            chown -R swapper:swapper /log
-
-RUN         pip3 install -r /workdir/reqs.txt
+            mkdir /log && \
+            touch /log/test.log && \
+            useradd -u 3003 -m swapper && \
+            chown -R 3003:3003 /workdir && \
+            chown -R 3003:3003 /log && \
+            python3 -m pip install --upgrade pip && \
+            python3 -m pip install -r /workdir/reqs.txt
 
 USER        swapper
 WORKDIR     /workdir
 
-
-CMD ["python3", "test.py"]
+CMD ["python3", "-m", "pytest", "test.py", "-s", "-vv"]

@@ -33,7 +33,7 @@ volumes:
         driver: ${VOLUMES_DRIVER}
 
 services:
-    
+
     workspace:
         build: ./workspace
         networks:
@@ -44,30 +44,35 @@ services:
             white:
                 ipv4_address: 172.26.0.10
         depends_on:
-            - komodo_base
-            - emx_base
-            - mm_base
+            - komodo_aa
+            - komodo_ab
+            - komodo_ba
+            - komodo_bb
+            - mm_seed_a
+            - mm_seed_b
+            - mm_seed_c
+            - mm_seed_d
+            - mm_swapper_a
+            - mm_swapper_b
+            - electrum_aa
+            - electrum_ab
+            - electrum_ba
+            - electrum_bb
         volumes:
             - ./log/workspace:/log
-
-    komodo_base:
-        build: ./base_komodo
-        image: local/komodo:latest
-
-    mm_base:
-        build: ./base_mm2
-        image: local/mm2:latest
+        command: ["python3", "dummy.py"]
 
     emx_base:
         build: ./base_emx
         image: local/electrumx:latest
 
     komodo_aa:
-        build: ./komodo
+        build:
+            context: ./komodo
+            args:
+                BUILD_TAG: ${KMD_TAG}
         environment:
-            CHAIN: ${AC_NAME_A}
-            SUPPLY: ${AC_SUPPLY_A}
-            CC: ${AC_CC_A}
+            AC: ${AC_PARAMS_A}
             NODE: ${ADD_NODE_AA}
             MODE: ${SCRIPT_MODE_AA}
             GEN: ${GEN_AA}
@@ -78,14 +83,15 @@ services:
             white:
                 ipv4_address: 172.26.0.2
         depends_on:
-            - komodo_base
+            - emx_base
 
     komodo_ab:
-        build: ./komodo
+        build:
+            context: ./komodo
+            args:
+                BUILD_TAG: ${KMD_TAG}
         environment:
-            CHAIN: ${AC_NAME_A}
-            SUPPLY: ${AC_SUPPLY_A}
-            CC: ${AC_CC_A}
+            AC: ${AC_PARAMS_A}
             NODE: ${ADD_NODE_AA}
             MODE: ${SCRIPT_MODE_AB}
             GEN: ${GEN_AB}
@@ -96,14 +102,15 @@ services:
             white:
                 ipv4_address: 172.26.0.4
         depends_on:
-            - komodo_base
+            - emx_base
 
     komodo_ba:
-        build: ./komodo
+        build:
+            context: ./komodo
+            args:
+                BUILD_TAG: ${KMD_TAG}
         environment:
-            CHAIN: ${AC_NAME_B}
-            SUPPLY: ${AC_SUPPLY_B}
-            CC: ${AC_CC_B}
+            AC: ${AC_PARAMS_B}
             NODE: ${ADD_NODE_BA}
             MODE: ${SCRIPT_MODE_BA}
             GEN: ${GEN_BA}
@@ -114,14 +121,15 @@ services:
             black:
                 ipv4_address: 172.27.0.2
         depends_on:
-            - komodo_base
+            - emx_base
 
     komodo_bb:
-        build: ./komodo
+        build:
+            context: ./komodo
+            args:
+                BUILD_TAG: ${KMD_TAG}
         environment:
-            CHAIN: ${AC_NAME_B}
-            SUPPLY: ${AC_SUPPLY_B}
-            CC: ${AC_CC_B}
+            AC: ${AC_PARAMS_B}
             NODE: ${ADD_NODE_BB}
             MODE: ${SCRIPT_MODE_BB}
             GEN: ${GEN_BB}
@@ -132,7 +140,7 @@ services:
             black:
                 ipv4_address: 172.27.0.4
         depends_on:
-            - komodo_base
+            - emx_base
 
     electrum_aa:
         build: ./electrumx
@@ -219,7 +227,10 @@ services:
             - emx_base
 
     mm_seed_a:
-        build: ./marketmaker2
+        build:
+            context: ./marketmaker2
+            args:
+                BUILD_TAG: ${MM2_TAG}
         environment:
             SEED: "True"
             PASSPHRASE: ${PASSPHRASE_A}
@@ -235,10 +246,13 @@ services:
         volumes:
             - ./log/mm2_seed_a:/log
         depends_on:
-            - mm_base
+            - emx_base
 
     mm_seed_b:
-        build: ./marketmaker2
+        build:
+            context: ./marketmaker2
+            args:
+                BUILD_TAG: ${MM2_TAG}
         environment:
             SEED: "True"
             PASSPHRASE: ${PASSPHRASE_B}
@@ -254,10 +268,13 @@ services:
         volumes:
             - ./log/mm2_seed_b:/log
         depends_on:
-            - mm_base
+            - emx_base
 
     mm_seed_c:
-        build: ./marketmaker2
+        build:
+            context: ./marketmaker2
+            args:
+                BUILD_TAG: ${MM2_TAG}
         environment:
             SEED: "True"
             PASSPHRASE: ${PASSPHRASE_C}
@@ -273,10 +290,13 @@ services:
         volumes:
             - ./log/mm2_seed_c:/log
         depends_on:
-            - mm_base
+            - emx_base
 
     mm_seed_d:
-        build: ./marketmaker2
+        build:
+            context: ./marketmaker2
+            args:
+                BUILD_TAG: ${MM2_TAG}
         environment:
             SEED: "True"
             PASSPHRASE: ${PASSPHRASE_D}
@@ -292,10 +312,13 @@ services:
         volumes:
             - ./log/mm2_seed_d:/log
         depends_on:
-            - mm_base
+            - emx_base
 
     mm_swapper_a:
-        build: ./marketmaker2
+        build:
+            context: ./marketmaker2
+            args:
+                BUILD_TAG: ${MM2_TAG}
         environment:
             SEED: "False"
             PASSPHRASE: ${PASSPHRASE_CLIENT_A}
@@ -311,10 +334,13 @@ services:
         volumes:
             - ./log/mm2_swapper_a:/log
         depends_on:
-            - mm_base
+            - emx_base
 
     mm_swapper_b:
-        build: ./marketmaker2
+        build:
+            context: ./marketmaker2
+            args:
+                BUILD_TAG: ${MM2_TAG}
         environment:
             SEED: "False"
             PASSPHRASE: ${PASSPHRASE_CLIENT_B}
@@ -330,4 +356,4 @@ services:
         volumes:
             - ./log/mm2_swapper_b:/log
         depends_on:
-            - mm_base
+            - emx_base
