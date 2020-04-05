@@ -100,7 +100,7 @@ def komodo_setgenerate(kmd_nodes: list, user: str, passwd: str) -> bool:
                 break
             except perror as e:
                 attempt += 1
-                print("Retrying connection %s\n error: %s", node, str(e))
+                print("Retrying connection " + node + "\n error: " + str(e))
                 time.sleep(1)
         if attempt >= 40:
             return False
