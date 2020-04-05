@@ -2,15 +2,10 @@ from .mm2proxy import MMProxy
 from slickrpc import Proxy as KMDProxy
 from pycurl import error as perror
 import time
-import os
 import logging
 
 
-def init_logs(logfile="/log/test.log") -> logging:
-    if os.path.isfile(logfile):
-        os.remove(logfile)
-    with open(logfile, 'a') as f:
-        pass  # creates empty file for logs
+def init_logs() -> logging:
     log = logging.getLogger(__name__)
     return log
 
