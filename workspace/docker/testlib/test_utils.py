@@ -158,7 +158,7 @@ def check_swap_status(swaps_dict: dict, node_proxy: MMProxy) -> dict:
                     swaps_dict.update({uuid: 'success'})
                 else:
                     pass
-        print("Step: " + str(i + 1) + "uuid: " + str(uuid) + " event types: " + str(event_occur))
+        print("Check step: " + str(i + 1) + "\nuuid: " + str(uuid) + " event types: " + str(event_occur))
         i += 1
     return swaps_dict
 
