@@ -145,7 +145,7 @@ def main():
         log.debug("Maker to Taker orders amount check: %s", str(check_str))
         check = check_saturation(orders_broadcast, taker_orders)
         check_str = 'passed' if check else 'failed'
-        log.debug("Taker to Created orders amount check passed: %s", str(check_str))
+        log.debug("Taker to Created orders amount check: %s", str(check_str))
         log.info("Test iteration finished")
         info_orders = orders_broadcast
         orders_broadcast += orders_broadcast_init
