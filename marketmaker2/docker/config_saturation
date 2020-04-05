@@ -1,0 +1,3 @@
+node1=`dig +short mm_seed`
+
+export config=`echo \{\"gui\":\"MM2GUI\",\"netid\":9000,\"userhome\":\"${HOME}/\",\"passphrase\":\"${PASSPHRASE}\",\"rpc_password\":\"OHSHITHEREWEGOAGAIN\",\"rpc_local_only\":false,\"rpcip\":\"0.0.0.0\",\"seednodes\":[\"$node1\"\]\}`

@@ -2,3 +2,13 @@ docker-compose
 docker-compose.yml
 .env
 .idea
+log/mm2_seed
+log/mm2_seed_a
+log/mm2_seed_b
+log/mm2_seed_c
+log/mm2_seed_d
+log/mm2_swapper_a
+log/mm2_swapper_b
+log/workspace
+log/
+log/workspace/log.txt

@@ -19,13 +19,14 @@ ENV         PACKS="python3.7 \
 RUN         apt-get update && \
             apt-get -y install -q $PACKS && \
             mkdir /log && \
-            touch /log/log.txt && \
+            touch /log/test.log && \
             useradd -u 3003 -m swapper && \
             chown -R 3003:3003 /workdir && \
             chown -R 3003:3003 /log && \
-            pip3 install -r /workdir/reqs.txt
+            python3 -m pip install --upgrade pip && \
+            python3 -m pip install -r /workdir/reqs.txt
 
 USER        swapper
 WORKDIR     /workdir
 
-CMD ["python3", "test.py"]
+CMD ["python3", "-m", "pytest", "test.py", "-s", "-vv"]
