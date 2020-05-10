@@ -16,14 +16,18 @@ def test_saturation():
     log.info("mm2 nodes connected, coins enabled")
     maker = proxy_dict.get('mm_swapper_a')
     taker = proxy_dict.get('mm_swapper_b')
-    orders_broadcast_init = orders_broadcast = 15
+    orders_broadcast_init = orders_broadcast = 10
     info_orders = orders_broadcast
     check = True  # init "pass" value
     log.info("Entering main test loop")
     while check:
         log.info("Clearing up previous orders in 30s")
         maker.cancel_all_orders(cancel_by={'type': 'All'})  # reset orders
-        time.sleep(30)
+        time.sleep(60)
+        maker_orders = get_orders_amount(maker, coin_a, coin_b).get('amount')
+        log.debug("Maker node orders available: %s", str(maker_orders))
+        taker_orders = get_orders_amount(taker, coin_a, coin_b).get('amount')
+        log.debug("Taker node orders available: %s", str(taker_orders))
         log.info("New iteration, orders to broadcast: %s", str(orders_broadcast))
         for i in range(orders_broadcast):
             log.debug("Order placing num: %s", str(i + 1))
