@@ -7,4 +7,4 @@ if [ ${SEED} = "True" ];
   	source config_saturation
 fi
 
-mm2 $config
+marketmaker-mainnet $config
