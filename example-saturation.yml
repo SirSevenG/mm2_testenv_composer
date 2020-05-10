@@ -61,6 +61,10 @@ services:
     build: ./base_emx
     image: local/electrumx:latest
 
+  mm2_base:
+    build: ./mm2_base
+    image: local/mm2:latest
+
   komodo_aa:
     build:
       context: ./komodo

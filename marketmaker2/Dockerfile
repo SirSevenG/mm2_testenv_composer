@@ -1,6 +1,7 @@
 ARG         BUILD_TAG=komodoofficial/atomicdexapi:beta-2.0.1798
 
-FROM       $BUILD_TAG
+# FROM       $BUILD_TAG
+FROM        local/mm2:latest
 LABEL       maintainer="SirSevenG <ottonseven@gmail.com>"
 
 # get env vars from composer
