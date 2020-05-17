@@ -1,6 +1,10 @@
 from .mm2proxy import MMProxy
 from slickrpc import Proxy as KMDProxy
 from pycurl import error as perror
+import pycurl
+import os
+import sys
+import certifi
 import time
 import logging
 
@@ -8,6 +12,30 @@ import logging
 def init_logs() -> logging:
     log = logging.getLogger(__name__)
     return log
+
+
+def curldownload(path: str):
+    url = "https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins"
+    fp = open(os.path.join(path), "wb")
+    curl = pycurl.Curl()
+    curl.setopt(pycurl.URL, url)
+    curl.setopt(pycurl.NOPROGRESS, 0)
+    curl.setopt(pycurl.FOLLOWLOCATION, 1)
+    curl.setopt(pycurl.MAXREDIRS, 5)
+    curl.setopt(pycurl.CONNECTTIMEOUT, 50)
+    curl.setopt(pycurl.TIMEOUT, 120)
+    curl.setopt(pycurl.FTP_RESPONSE_TIMEOUT, 600)
+    curl.setopt(pycurl.NOSIGNAL, 1)
+    curl.setopt(pycurl.WRITEDATA, fp)
+    curl.setopt(curl.CAINFO, certifi.where())
+    try:
+        curl.perform()
+    except pycurl.error:
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        sys.stderr.flush()
+    curl.close()
+    fp.close()
 
 
 def init_connection(mm2userpass: str, mm_nodes: list, electrums_base: list, electrums_rel: list,
