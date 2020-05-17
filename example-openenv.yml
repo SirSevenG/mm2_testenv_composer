@@ -1,0 +1,221 @@
+version: '3'
+
+networks:
+    white:
+        driver: ${NETWORKS_DRIVER}
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.26.0.0/16
+    black:
+        driver: ${NETWORKS_DRIVER}
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.27.0.0/16
+    mm:
+        driver: ${NETWORKS_DRIVER}
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.28.0.0/16
+
+volumes:
+    komodo_base:
+        driver: ${VOLUMES_DRIVER}
+    komodo_aa:
+        driver: ${VOLUMES_DRIVER}
+    komodo_ab:
+        driver: ${VOLUMES_DRIVER}
+    komodo_ba:
+        driver: ${VOLUMES_DRIVER}
+    komodo_bb:
+        driver: ${VOLUMES_DRIVER}
+
+services:
+
+    workspace:
+        build: ./workspace
+        networks:
+            mm:
+                ipv4_address: 172.28.0.10
+            black:
+                ipv4_address: 172.27.0.10
+            white:
+                ipv4_address: 172.26.0.10
+        depends_on:
+            - komodo_aa
+            - komodo_ab
+            - komodo_ba
+            - komodo_bb
+            - electrum_aa
+            - electrum_ab
+            - electrum_ba
+            - electrum_bb
+        volumes:
+            - ./log/workspace:/log
+        command: ["echo", "success"]
+
+    emx_base:
+        build: ./base_emx
+        image: local/electrumx:latest
+
+    komodo_aa:
+        build:
+            context: ./komodo
+            args:
+                BUILD_TAG: ${KMD_TAG}
+        environment:
+            AC: ${AC_PARAMS_A}
+            NODE: ${ADD_NODE_AA}
+            MODE: ${SCRIPT_MODE_AA}
+            GEN: ${GEN_AA}
+        ports:
+           - "11511:11511"
+           - "11510:11511"
+        networks:
+            white:
+                ipv4_address: 172.26.0.2
+        depends_on:
+            - emx_base
+
+    komodo_ab:
+        build:
+            context: ./komodo
+            args:
+                BUILD_TAG: ${KMD_TAG}
+        environment:
+            AC: ${AC_PARAMS_A}
+            NODE: ${ADD_NODE_AA}
+            MODE: ${SCRIPT_MODE_AB}
+            GEN: ${GEN_AB}
+        ports:
+           - "21511:11511"
+           - "21510:11510"
+        networks:
+            white:
+                ipv4_address: 172.26.0.4
+        depends_on:
+            - emx_base
+
+    komodo_ba:
+        build:
+            context: ./komodo
+            args:
+                BUILD_TAG: ${KMD_TAG}
+        environment:
+            AC: ${AC_PARAMS_B}
+            NODE: ${ADD_NODE_BA}
+            MODE: ${SCRIPT_MODE_BA}
+            GEN: ${GEN_BA}
+        ports:
+           - "18465:8465"
+           - "18464:8464"
+        networks:
+            black:
+                ipv4_address: 172.27.0.2
+        depends_on:
+            - emx_base
+
+    komodo_bb:
+        build:
+            context: ./komodo
+            args:
+                BUILD_TAG: ${KMD_TAG}
+        environment:
+            AC: ${AC_PARAMS_B}
+            NODE: ${ADD_NODE_BB}
+            MODE: ${SCRIPT_MODE_BB}
+            GEN: ${GEN_BB}
+        ports:
+           - "28465:8465"
+           - "28464:8464"
+        networks:
+            black:
+                ipv4_address: 172.27.0.4
+        depends_on:
+            - emx_base
+
+    electrum_aa:
+        build: ./electrumx
+        environment:
+            SERVICES: tcp://172.28.0.2:50001,ssl://172.28.0.2:50002,wss://172.28.0.2:50004,rpc://0.0.0.0:8000
+            COIN: Komodo
+            DAEMON_URL: http://user4234174465:passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9@node.sirseven.me:11511
+            DB_DIRECTORY: /data
+            LOG_LEVEL: debug
+        ports:
+            - "15001:50001"
+            - "15002:50002"
+            - "15004:50004"
+            - "18000:8000"
+        networks:
+            white:
+                ipv4_address: 172.26.0.6
+            mm:
+                ipv4_address: 172.28.0.2
+        depends_on:
+            - emx_base
+
+    electrum_ab:
+        build: ./electrumx
+        environment:
+            SERVICES: tcp://172.28.0.4:50001,ssl://172.28.0.4:50002,wss://172.28.0.4:50004,rpc://0.0.0.0:8000
+            COIN: Komodo
+            DAEMON_URL: http://user4234174465:passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9@node.sirseven.me:21511
+            DB_DIRECTORY: /data
+            LOG_LEVEL: debug
+        ports:
+          - "25001:50001"
+          - "25002:50002"
+          - "25004:50004"
+          - "28000:8000"
+        networks:
+            white:
+                ipv4_address: 172.26.0.8
+            mm:
+                ipv4_address: 172.28.0.4
+        depends_on:
+            - emx_base
+
+    electrum_ba:
+        build: ./electrumx
+        environment:
+            SERVICES: tcp://172.28.0.6:50001,ssl://172.28.0.6:50002,wss://172.28.0.6:50004,rpc://0.0.0.0:8000
+            COIN: Komodo
+            DAEMON_URL: http://user552075967:pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d@node.sirseven.me:18465
+            DB_DIRECTORY: /data
+            LOG_LEVEL: debug
+        ports:
+          - "35001:50001"
+          - "35002:50002"
+          - "35004:50004"
+          - "38000:8000"
+        networks:
+            black:
+                ipv4_address: 172.27.0.6
+            mm:
+                ipv4_address: 172.28.0.6
+        depends_on:
+            - emx_base
+
+    electrum_bb:
+        build: ./electrumx
+        environment:
+            SERVICES: tcp://172.28.0.8:50001,ssl://172.28.0.8:50002,wss://172.28.0.8:50004,rpc://0.0.0.0:8000
+            COIN: Komodo
+            DAEMON_URL: http://user552075967:pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d@node.sirseven.me:28465
+            DB_DIRECTORY: /data
+            LOG_LEVEL: debug
+        ports:
+          - "45001:50001"
+          - "45002:50002"
+          - "45004:50004"
+          - "48000:8000"
+        networks:
+            black:
+                ipv4_address: 172.27.0.8
+            mm:
+                ipv4_address: 172.28.0.8
+        depends_on:
+            - emx_base
