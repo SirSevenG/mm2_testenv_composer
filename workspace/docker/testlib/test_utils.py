@@ -14,8 +14,8 @@ def init_logs() -> logging:
     return log
 
 
-def curldownload(path: str):
-    url = "https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins"
+def curldownload(path: str, url="https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins"):
+    """Download file from url to path with pycurl"""
     fp = open(os.path.join(path), "wb")
     curl = pycurl.Curl()
     curl.setopt(pycurl.URL, url)
