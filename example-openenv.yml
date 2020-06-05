@@ -139,7 +139,7 @@ services:
     electrum_aa:
         build: ./electrumx
         environment:
-            SERVICES: tcp://172.28.0.2:50001,ssl://172.28.0.2:50002,wss://172.28.0.2:50004,rpc://0.0.0.0:8000
+            SERVICES: tcp://0.0.0.0:50001,ssl://172.28.0.2:50002,wss://172.28.0.2:50004,rpc://0.0.0.0:8000
             COIN: Komodo
             DAEMON_URL: http://user4234174465:passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9@node.sirseven.me:11511
             DB_DIRECTORY: /data
@@ -160,7 +160,7 @@ services:
     electrum_ab:
         build: ./electrumx
         environment:
-            SERVICES: tcp://172.28.0.4:50001,ssl://172.28.0.4:50002,wss://172.28.0.4:50004,rpc://0.0.0.0:8000
+            SERVICES: tcp://0.0.0.0:50001,ssl://172.28.0.4:50002,wss://172.28.0.4:50004,rpc://0.0.0.0:8000
             COIN: Komodo
             DAEMON_URL: http://user4234174465:passd6cdd7a0a299fc16ce8431d624c845b3e21f95e06688b80cdad9377936978fdaf9@node.sirseven.me:21511
             DB_DIRECTORY: /data
@@ -181,7 +181,7 @@ services:
     electrum_ba:
         build: ./electrumx
         environment:
-            SERVICES: tcp://172.28.0.6:50001,ssl://172.28.0.6:50002,wss://172.28.0.6:50004,rpc://0.0.0.0:8000
+            SERVICES: tcp://0.0.0.0:50001,ssl://172.28.0.6:50002,wss://172.28.0.6:50004,rpc://0.0.0.0:8000
             COIN: Komodo
             DAEMON_URL: http://user552075967:pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d@node.sirseven.me:18465
             DB_DIRECTORY: /data
@@ -202,7 +202,7 @@ services:
     electrum_bb:
         build: ./electrumx
         environment:
-            SERVICES: tcp://172.28.0.8:50001,ssl://172.28.0.8:50002,wss://172.28.0.8:50004,rpc://0.0.0.0:8000
+            SERVICES: tcp://0.0.0.0:50001,ssl://172.28.0.8:50002,wss://172.28.0.8:50004,rpc://0.0.0.0:8000
             COIN: Komodo
             DAEMON_URL: http://user552075967:pass9ffce55d064e03d3bce1fa5f1aadb91da37805762ba7bc4cad52804b32839a590d@node.sirseven.me:28465
             DB_DIRECTORY: /data
