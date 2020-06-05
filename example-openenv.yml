@@ -72,7 +72,7 @@ services:
             GEN: ${GEN_AA}
         ports:
            - "11511:11511"
-           - "11510:11511"
+           - "11510:11510"
         networks:
             white:
                 ipv4_address: 172.26.0.2
