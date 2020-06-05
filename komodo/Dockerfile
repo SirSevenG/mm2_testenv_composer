@@ -13,7 +13,9 @@ ENV         AC=$AC \
             HOME=/
 
 EXPOSE      8465/tcp
+EXPOSE      8464/tcp
 EXPOSE      11511/tcp
+EXPOSE      11510/tcp
 
 # cp configs and bootstrap
 COPY        docker/bootstrap /.komodo/
