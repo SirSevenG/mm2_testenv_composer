@@ -9,7 +9,7 @@ def enable_coins(proxy: MMProxy, conffile: str) -> list:
     with open(conffile) as f:
         coinsconf = ujson.load(f)
         for item in coinsconf:
-            coin = item.get('name')
+            coin = item.get('abbr')
             cointype = item.get('type')
             if cointype != 'erc':
                 servers = []
