@@ -31,7 +31,7 @@ RUN         apt-get update && \
             chmod +x /mmaker2/start.sh && \
             cd /mmaker2 && \
             python3 -m pip install --upgrade pip && \
-            python3 -m pip install -r /workdir/reqs.txt
+            python3 -m pip install -r /mmaker2/reqs.txt
 #    wget https://raw.githubusercontent.com/jl777/coins/master/coins
 
 WORKDIR     /mmaker2
