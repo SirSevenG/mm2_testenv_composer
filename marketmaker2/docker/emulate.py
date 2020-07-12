@@ -1,4 +1,5 @@
 from mm2proxy import MMProxy
+from pycurl import error as perror
 import time
 import ujson
 
@@ -37,6 +38,20 @@ def mock():
         mm_node = MMProxy(node_params_dictionary, timeout=120)
     except ConnectionAbortedError as e:
         raise Exception("Connection error! Probably no daemon on selected port. Error: ", e)
+    # check connections
+    while True:
+        attempt = 0
+        try:
+            res = mm_node.version()
+            print(res)
+            break
+        except perror as e:
+            attempt += 1
+            print('MM2 does not respond, retrying\nError: ', e)
+            if attempt > 15:
+                raise Exception("Connection error ", e)
+            else:
+                time.sleep(5)
     time.sleep(10)
     coins = enable_coins(mm_node, "coinconf.json")
     time.sleep(5)
