@@ -1,4 +1,4 @@
-from .mm2proxy import MMProxy
+from mm2proxy import MMProxy
 import time
 import ujson
 
@@ -38,7 +38,7 @@ def mock():
     except ConnectionAbortedError as e:
         raise Exception("Connection error! Probably no daemon on selected port. Error: ", e)
     time.sleep(10)
-    coins = enable_coins(mm_node, "coinsconf.json")
+    coins = enable_coins(mm_node, "coinconf.json")
     time.sleep(5)
     count = 0
     while True:
