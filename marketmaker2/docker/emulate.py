@@ -61,7 +61,7 @@ def mock():
             mm_node.metrics()
             count = 0
         for coin in coins:
-            mm_node.my_balance(coin)
+            mm_node.my_balance(coin=coin)
         time.sleep(30)
         count += 1
 
